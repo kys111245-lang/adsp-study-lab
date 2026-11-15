@@ -1,0 +1,3 @@
+# Web app and run_app.py use only the Python standard library.
+# Optional: generate_pdf.py
+reportlab>=4,<5

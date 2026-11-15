@@ -1,0 +1,24 @@
+# Credentials and local settings
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+# Generated / local files
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+node_modules/
+dist/
+build/
+*.log
+*.db
+*.sqlite*
+.DS_Store
+Thumbs.db
+# Private datasets / outputs
+data/
+results/
+*_results/
+.ipynb_checkpoints/

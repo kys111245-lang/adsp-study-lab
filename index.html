@@ -1,0 +1,1829 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ADsP D-4 초단기 완성 마스터 웹앱 | 필수개념 • 두문자암기 • 공식정복 • 실전모의고사</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- KaTeX for Clean Math Formulas -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800;900&display=swap');
+    
+    * {
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+    }
+    
+    /* 깔끔하고 명확한 CSS 분수/수식 스타일 */
+    .fraction {
+      display: inline-flex;
+      flex-direction: column;
+      vertical-align: middle;
+      text-align: center;
+      padding: 0 4px;
+    }
+    .numerator {
+      border-bottom: 2px solid currentColor;
+      padding-bottom: 2px;
+      font-weight: 600;
+    }
+    .denominator {
+      padding-top: 2px;
+      font-weight: 600;
+    }
+
+    /* 플래시카드 3D 플립 애니메이션 */
+    .perspective-1000 {
+      perspective: 1000px;
+    }
+    .transform-style-preserve-3d {
+      transform-style: preserve-3d;
+    }
+    .backface-hidden {
+      backface-visibility: hidden;
+    }
+    .rotate-y-180 {
+      transform: rotateY(180deg);
+    }
+
+    /* 인쇄 전용 스타일 (A4 필기본 출력용) */
+    @media print {
+      body {
+        background: white !important;
+        color: black !important;
+        font-size: 11pt;
+      }
+      .no-print {
+        display: none !important;
+      }
+      .print-only {
+        display: block !important;
+      }
+      .page-break {
+        page-break-before: always;
+      }
+      .shadow-md, .shadow-lg, .shadow-xl {
+        box-shadow: none !important;
+      }
+      .border {
+        border-color: #cbd5e1 !important;
+      }
+    }
+    
+    .print-only {
+      display: none;
+    }
+
+    /* 스크롤바 커스텀 */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
+
+  <!-- 상단 네비게이션 헤더 -->
+  <header class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm no-print">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        
+        <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('dashboard')">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white shadow-md shadow-blue-500/20">
+            <i class="fa-solid fa-graduation-cap text-lg"></i>
+          </div>
+          <div>
+            <div class="flex items-center space-x-2">
+              <span class="font-extrabold text-xl tracking-tight text-slate-900">ADsP D-4 마스터</span>
+              <span class="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full font-bold animate-pulse">D-4 벼락치기</span>
+            </div>
+            <p class="text-xs text-slate-500 font-medium">데이터분석 준전문가 핵심 압축 합격 패키지</p>
+          </div>
+        </div>
+
+        <!-- 탭 네비게이션 버튼들 -->
+        <nav class="hidden md:flex items-center space-x-1">
+          <button onclick="switchTab('dashboard')" id="nav-dashboard" class="nav-btn px-3 py-2 rounded-lg text-sm font-semibold text-blue-600 bg-blue-50">
+            <i class="fa-solid fa-compass mr-1.5"></i>벼락치기 로드맵
+          </button>
+          <button onclick="switchTab('concepts')" id="nav-concepts" class="nav-btn px-3 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100">
+            <i class="fa-solid fa-book-bookmark mr-1.5"></i>필수개념 & 꿀팁
+          </button>
+          <button onclick="switchTab('formulas')" id="nav-formulas" class="nav-btn px-3 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100">
+            <i class="fa-solid fa-calculator mr-1.5"></i>무결점 공식 & 계산기
+          </button>
+          <button onclick="switchTab('flashcards')" id="nav-flashcards" class="nav-btn px-3 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100">
+            <i class="fa-solid fa-bolt mr-1.5"></i>3초 플래시카드 & OX
+          </button>
+          <button onclick="switchTab('mocktest')" id="nav-mocktest" class="nav-btn px-3 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100">
+            <i class="fa-solid fa-file-signature mr-1.5"></i>실전 모의고사 50제
+          </button>
+          <button onclick="switchTab('workbook')" id="nav-workbook" class="nav-btn px-3 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100">
+            <i class="fa-solid fa-pen-nib mr-1.5"></i>따라쓰기 & PDF
+          </button>
+        </nav>
+
+        <!-- 오른쪽 빠른 액션 버튼 -->
+        <div class="flex items-center space-x-2">
+          <a href="adsp_handwriting_workbook.pdf" download="ADsP_D4_따라쓰기_필기본_워크북.pdf" class="inline-flex items-center px-3.5 py-1.5 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg shadow-sm transition">
+            <i class="fa-solid fa-download mr-1.5"></i>필기본 PDF 다운
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 모바일 하단 탭바 -->
+    <div class="md:hidden flex overflow-x-auto px-2 py-2 border-t border-slate-200 bg-white space-x-1 text-xs">
+      <button onclick="switchTab('dashboard')" class="flex-shrink-0 px-2.5 py-1.5 rounded font-semibold text-blue-600 bg-blue-50">로드맵</button>
+      <button onclick="switchTab('concepts')" class="flex-shrink-0 px-2.5 py-1.5 rounded font-semibold text-slate-600">필수개념</button>
+      <button onclick="switchTab('formulas')" class="flex-shrink-0 px-2.5 py-1.5 rounded font-semibold text-slate-600">공식계산</button>
+      <button onclick="switchTab('flashcards')" class="flex-shrink-0 px-2.5 py-1.5 rounded font-semibold text-slate-600">플래시카드</button>
+      <button onclick="switchTab('mocktest')" class="flex-shrink-0 px-2.5 py-1.5 rounded font-semibold text-slate-600">모의고사</button>
+      <button onclick="switchTab('workbook')" class="flex-shrink-0 px-2.5 py-1.5 rounded font-semibold text-slate-600">따라쓰기</button>
+    </div>
+  </header>
+
+  <!-- 메인 컨텐츠 영역 -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+    <!-- TAB 1: 벼락치기 로드맵 & 합격 전략 대시보드 -->
+    <section id="tab-dashboard" class="tab-content space-y-6">
+      
+      <!-- 상단 배너 -->
+      <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-700 via-indigo-700 to-slate-900 text-white p-6 sm:p-8 shadow-xl">
+        <div class="relative z-10 max-w-3xl">
+          <div class="inline-flex items-center space-x-2 bg-red-500/90 text-white text-xs font-black px-3 py-1 rounded-full mb-3 uppercase tracking-wider">
+            <i class="fa-solid fa-fire"></i> D-4 벼락치기 파이널 스프린트
+          </div>
+          <h1 class="text-2xl sm:text-3xl font-black leading-tight tracking-tight mb-2">
+            "시험 4일 전, 두려워하지 마세요. 나오는 것만 딱 잡으면 합격합니다!"
+          </h1>
+          <p class="text-blue-100 text-sm sm:text-base leading-relaxed mb-6">
+            ADsP 합격 기준은 <b>총점 60점 이상</b> 및 <b>과목당 40% 이상(과락 방지)</b>입니다.<br class="hidden sm:inline">
+            복잡하고 지엽적인 이론은 버리고, 시험장에서 1초 만에 답이 보이는 <b>두문자 암기법</b>과 <b>절대 깨지지 않는 필수 계산 공식</b>, 그리고 <b>손글씨 따라쓰기</b>로 4일 만에 합격권을 완성하세요!
+          </p>
+
+          <div class="flex flex-wrap gap-3">
+            <button onclick="switchTab('concepts')" class="px-5 py-2.5 rounded-xl bg-white text-blue-900 font-bold text-sm hover:bg-blue-50 shadow-md transition flex items-center">
+              <i class="fa-solid fa-book-open mr-2 text-blue-600"></i>필수 개념 & 두문자 암기 시작
+            </button>
+            <button onclick="switchTab('mocktest')" class="px-5 py-2.5 rounded-xl bg-blue-600/80 hover:bg-blue-600 text-white font-bold text-sm border border-blue-400/40 transition flex items-center">
+              <i class="fa-solid fa-list-check mr-2"></i>실전 50제 모의고사 풀기
+            </button>
+            <a href="adsp_handwriting_workbook.pdf" download="ADsP_D4_따라쓰기_필기본_워크북.pdf" class="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-sm shadow-md transition flex items-center">
+              <i class="fa-solid fa-file-pdf mr-2 text-slate-900"></i>인쇄용 따라쓰기 PDF 다운
+            </a>
+          </div>
+        </div>
+
+        <div class="absolute right-0 bottom-0 opacity-10 sm:opacity-20 translate-x-10 translate-y-10 pointer-events-none">
+          <i class="fa-solid fa-chart-line text-[240px]"></i>
+        </div>
+      </div>
+
+      <!-- D-4 일차별 타임라인 플래너 -->
+      <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+        <h2 class="text-lg font-extrabold text-slate-900 mb-4 flex items-center">
+          <i class="fa-solid fa-calendar-check text-indigo-600 mr-2"></i>D-4 초압축 합격 타임라인
+        </h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <!-- Day 4 -->
+          <div class="p-4 rounded-xl border-2 border-blue-500 bg-blue-50/50 relative">
+            <span class="absolute -top-3 right-4 bg-blue-600 text-white text-[11px] font-bold px-2 py-0.5 rounded-full">D-4 (오늘)</span>
+            <div class="text-xs font-bold text-blue-800 uppercase tracking-wider mb-1">제1과목 완전 정복</div>
+            <h3 class="font-extrabold text-slate-900 text-base mb-2">데이터의 이해</h3>
+            <ul class="text-xs text-slate-600 space-y-1.5 mb-3">
+              <li><i class="fa-solid fa-check text-blue-500 mr-1"></i>DIKW 피라미드 (데정지지)</li>
+              <li><i class="fa-solid fa-check text-blue-500 mr-1"></i>암묵지/형식지 (공표연내)</li>
+              <li><i class="fa-solid fa-check text-blue-500 mr-1"></i>빅데이터 위기 & 통제 (사책알)</li>
+              <li><i class="fa-solid fa-check text-blue-500 mr-1"></i>데이터 사이언티스트 역량</li>
+            </ul>
+            <div class="text-[11px] font-bold text-blue-700 bg-blue-100/70 p-2 rounded">
+              🎯 목표: 1과목 10문제 중 8개 이상 확보!
+            </div>
+          </div>
+
+          <!-- Day 3 -->
+          <div class="p-4 rounded-xl border border-teal-300 bg-teal-50/40 relative">
+            <span class="absolute -top-3 right-4 bg-teal-600 text-white text-[11px] font-bold px-2 py-0.5 rounded-full">D-3</span>
+            <div class="text-xs font-bold text-teal-800 uppercase tracking-wider mb-1">제2과목 기획 정복</div>
+            <h3 class="font-extrabold text-slate-900 text-base mb-2">데이터 분석 기획</h3>
+            <ul class="text-xs text-slate-600 space-y-1.5 mb-3">
+              <li><i class="fa-solid fa-check text-teal-500 mr-1"></i>과제발굴 4방식 (최솔인발)</li>
+              <li><i class="fa-solid fa-check text-teal-500 mr-1"></i>준비도/성숙도 (준도확정)</li>
+              <li><i class="fa-solid fa-check text-teal-500 mr-1"></i>분석 조직 3구조 (집중/기능/분산)</li>
+              <li><i class="fa-solid fa-check text-teal-500 mr-1"></i>마스터플랜 우선순위 (난이도/시급성)</li>
+            </ul>
+            <div class="text-[11px] font-bold text-teal-800 bg-teal-100/70 p-2 rounded">
+              🎯 목표: 2과목 10문제 중 8개 이상 확보!
+            </div>
+          </div>
+
+          <!-- Day 2 -->
+          <div class="p-4 rounded-xl border border-purple-300 bg-purple-50/40 relative">
+            <span class="absolute -top-3 right-4 bg-purple-600 text-white text-[11px] font-bold px-2 py-0.5 rounded-full">D-2</span>
+            <div class="text-xs font-bold text-purple-800 uppercase tracking-wider mb-1">제3과목 기초/통계</div>
+            <h3 class="font-extrabold text-slate-900 text-base mb-2">통계분석 & R 기초</h3>
+            <ul class="text-xs text-slate-600 space-y-1.5 mb-3">
+              <li><i class="fa-solid fa-check text-purple-500 mr-1"></i>R 자료구조 & 이상치 IQR</li>
+              <li><i class="fa-solid fa-check text-purple-500 mr-1"></i>p-value 가설검정 & 1/2종 오류</li>
+              <li><i class="fa-solid fa-check text-purple-500 mr-1"></i>회귀분석 결정계수 R² & VIF</li>
+              <li><i class="fa-solid fa-check text-purple-500 mr-1"></i>시계열 정상성 & ARIMA(p,d,q)</li>
+            </ul>
+            <div class="text-[11px] font-bold text-purple-800 bg-purple-100/70 p-2 rounded">
+              🎯 목표: 과락 위험 1순위 통계 파트 완벽 방어!
+            </div>
+          </div>
+
+          <!-- Day 1 -->
+          <div class="p-4 rounded-xl border border-rose-300 bg-rose-50/40 relative">
+            <span class="absolute -top-3 right-4 bg-rose-600 text-white text-[11px] font-bold px-2 py-0.5 rounded-full">D-1 (전야제)</span>
+            <div class="text-xs font-bold text-rose-800 uppercase tracking-wider mb-1">제3과목 머신러닝/평가</div>
+            <h3 class="font-extrabold text-slate-900 text-base mb-2">계산 & 정밀 분석</h3>
+            <ul class="text-xs text-slate-600 space-y-1.5 mb-3">
+              <li><i class="fa-solid fa-check text-rose-500 mr-1"></i>혼동행렬(정밀도/재현율/F1)</li>
+              <li><i class="fa-solid fa-check text-rose-500 mr-1"></i>연관분석(지지도/신뢰도/향상도)</li>
+              <li><i class="fa-solid fa-check text-rose-500 mr-1"></i>의사결정나무 불순도 (지니/엔트로피)</li>
+              <li><i class="fa-solid fa-check text-rose-500 mr-1"></i>앙상블(배깅/부스팅) & 군집</li>
+            </ul>
+            <div class="text-[11px] font-bold text-rose-800 bg-rose-100/70 p-2 rounded">
+              🎯 목표: 50제 모의고사 오답노트 & 60점 돌파!
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3대 합격 꿀팁 카드 -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+          <div class="w-10 h-10 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center font-black mb-3">
+            <i class="fa-solid fa-lightbulb"></i>
+          </div>
+          <h3 class="font-bold text-slate-900 mb-1">1. 과락 방지 전략</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            과목당 40% 미만이면 총점 90점이라도 불합격입니다. 1과목(10문항) 4개 이상, 2과목(10문항) 4개 이상, 3과목(30문항) 12개 이상을 반드시 맞춰야 합니다. 1·2과목은 암기 위주이므로 80% 이상을 안정적으로 따놓는 것이 합격의 지름길입니다!
+          </p>
+        </div>
+
+        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+          <div class="w-10 h-10 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center font-black mb-3">
+            <i class="fa-solid fa-calculator"></i>
+          </div>
+          <h3 class="font-bold text-slate-900 mb-1">2. 계산 문제 무조건 챙기기</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            혼동행렬(정밀도/재현율/F1), 연관분석(지지도/신뢰도/향상도), 지니계수는 공식만 외우면 산수 수준으로 출제됩니다. 공식을 헷갈리지 않게 본 웹앱의 [무결점 공식 계산기]로 수치 대입 훈련을 해두세요!
+          </p>
+        </div>
+
+        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+          <div class="w-10 h-10 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center font-black mb-3">
+            <i class="fa-solid fa-pen-fancy"></i>
+          </div>
+          <h3 class="font-bold text-slate-900 mb-1">3. 손글씨 따라쓰기의 힘</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            눈으로만 읽는 것은 시험장에서 기억나지 않습니다. 생성된 [따라쓰기 워크북 PDF]를 출력하거나 아이패드/태블릿에서 빈칸을 직접 손으로 쓰면서 두문자를 뇌에 각인시키세요!
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: 필수 개념 & 외우기 쉬운 꿀팁 (1/2/3과목) -->
+    <section id="tab-concepts" class="tab-content hidden space-y-6">
+      <!-- 상단 컨트롤바 -->
+      <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-center space-x-2">
+          <span class="text-xs font-bold text-slate-500 uppercase">과목 필터:</span>
+          <button onclick="filterConcepts('all')" id="c-btn-all" class="concept-filter px-3 py-1 text-xs font-bold rounded-lg bg-slate-900 text-white">전체</button>
+          <button onclick="filterConcepts('sub1')" id="c-btn-sub1" class="concept-filter px-3 py-1 text-xs font-bold rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200">1과목 데이터 이해</button>
+          <button onclick="filterConcepts('sub2')" id="c-btn-sub2" class="concept-filter px-3 py-1 text-xs font-bold rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200">2과목 데이터 분석 기획</button>
+          <button onclick="filterConcepts('sub3')" id="c-btn-sub3" class="concept-filter px-3 py-1 text-xs font-bold rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200">3과목 데이터 분석</button>
+        </div>
+
+        <div class="text-xs text-slate-500 font-medium">
+          💡 각 카드의 <span class="bg-red-100 text-red-700 px-1.5 py-0.5 rounded font-bold">두문자 꿀팁</span>을 입으로 소리 내어 3번 읽으세요!
+        </div>
+      </div>
+
+      <!-- 개념 카드 그리드 -->
+      <div id="concepts-container" class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <!-- JS로 동적 렌더링 -->
+      </div>
+    </section>
+
+    <!-- TAB 3: 무결점 공식 & 인터랙티브 계산기 -->
+    <section id="tab-formulas" class="tab-content hidden space-y-6">
+      <div class="bg-gradient-to-r from-purple-700 to-indigo-800 rounded-2xl p-6 text-white shadow-lg">
+        <div class="flex items-center space-x-2 text-xs font-bold uppercase tracking-wider text-purple-200 mb-1">
+          <i class="fa-solid fa-square-root-variable"></i> 수식 깨짐 방지 & 직관적 비주얼 덱
+        </div>
+        <h2 class="text-2xl font-black mb-2">이상한 특수기호(&&%%) 없는 100% 클린 공식집</h2>
+        <p class="text-purple-100 text-sm max-w-2xl leading-relaxed">
+          AI 응답이나 깨진 웹페이지에서 흔히 발생하는 기호 깨짐 오류를 원천 차단했습니다.
+          분자/분모가 명확히 분리된 비주얼 박스와 기출 숫자 대입기를 통해 시험장에서 손이 먼저 움직이게 만듭니다.
+        </p>
+      </div>
+
+      <!-- 공식 카드 그리드 -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+        <!-- 1. 혼동행렬 (Confusion Matrix) -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-4">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-extrabold px-2.5 py-1 rounded-full bg-blue-100 text-blue-700">3과목 평가 지표</span>
+            <span class="text-xs font-black text-rose-600 bg-rose-50 px-2 py-0.5 rounded border border-rose-200">기출 1순위 (매회 출제)</span>
+          </div>
+
+          <h3 class="text-lg font-black text-slate-900">1. 혼동행렬 (정밀도 • 재현율 • F1-Score)</h3>
+
+          <!-- 혼동행렬 구조 표 -->
+          <div class="overflow-x-auto">
+            <table class="w-full text-center text-xs border-collapse">
+              <thead>
+                <tr class="bg-slate-100 text-slate-700">
+                  <th class="p-2 border border-slate-200">구분</th>
+                  <th class="p-2 border border-slate-200 font-bold text-blue-600">예측 True (Positive)</th>
+                  <th class="p-2 border border-slate-200 font-bold text-slate-600">예측 False (Negative)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="p-2 font-bold bg-slate-50 border border-slate-200 text-blue-600">실제 True</td>
+                  <td class="p-2 bg-blue-50/50 border border-slate-200 font-bold text-blue-800">TP (진짜 맞음)</td>
+                  <td class="p-2 bg-rose-50/50 border border-slate-200 font-bold text-rose-800">FN (놓침: 2종오류)</td>
+                </tr>
+                <tr>
+                  <td class="p-2 font-bold bg-slate-50 border border-slate-200 text-slate-600">실제 False</td>
+                  <td class="p-2 bg-amber-50/50 border border-slate-200 font-bold text-amber-800">FP (오경보: 1종오류)</td>
+                  <td class="p-2 bg-slate-50/50 border border-slate-200 font-bold text-slate-800">TN (정상 제외)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- 공식 시각화 -->
+          <div class="space-y-3 bg-slate-50 p-4 rounded-xl border border-slate-200">
+            <!-- 정밀도 -->
+            <div class="flex items-center justify-between text-xs sm:text-sm">
+              <span class="font-bold text-slate-700 w-28">정밀도 (Precision):</span>
+              <div class="fraction text-blue-700">
+                <span class="numerator">TP</span>
+                <span class="denominator">TP + FP</span>
+              </div>
+              <span class="text-[11px] text-slate-500 text-right">"모델이 True라고 한 것 중 맞춘 비율"</span>
+            </div>
+            <!-- 재현율 -->
+            <div class="flex items-center justify-between text-xs sm:text-sm">
+              <span class="font-bold text-slate-700 w-28">재현율 (Recall/민감도):</span>
+              <div class="fraction text-emerald-700">
+                <span class="numerator">TP</span>
+                <span class="denominator">TP + FN</span>
+              </div>
+              <span class="text-[11px] text-slate-500 text-right">"실제 True 중 모델이 맞춘 비율"</span>
+            </div>
+            <!-- F1 Score -->
+            <div class="flex items-center justify-between text-xs sm:text-sm">
+              <span class="font-bold text-slate-700 w-28">F1-Score:</span>
+              <div class="flex items-center space-x-1 font-bold text-purple-700">
+                <span>2 × </span>
+                <div class="fraction">
+                  <span class="numerator">정밀도 × 재현율</span>
+                  <span class="denominator">정밀도 + 재현율</span>
+                </div>
+              </div>
+              <span class="text-[11px] text-purple-600 font-bold text-right">조화평균 (Harmonic Mean)</span>
+            </div>
+          </div>
+
+          <!-- 혼동행렬 실시간 계산기 -->
+          <div class="p-4 bg-indigo-50/60 rounded-xl border border-indigo-100 space-y-3">
+            <div class="text-xs font-extrabold text-indigo-900 flex items-center justify-between">
+              <span><i class="fa-solid fa-calculator text-indigo-600 mr-1.5"></i>직접 숫자 넣고 계산해보기</span>
+              <button onclick="resetConfusionMatrix()" class="text-[11px] text-indigo-600 underline">기본값 리셋</button>
+            </div>
+            
+            <div class="grid grid-cols-4 gap-2 text-center">
+              <div>
+                <label class="block text-[11px] font-bold text-slate-600 mb-1">TP</label>
+                <input id="cm-tp" type="number" value="80" oninput="calcConfusionMatrix()" class="w-full text-center py-1 border border-slate-300 rounded font-bold text-sm bg-white">
+              </div>
+              <div>
+                <label class="block text-[11px] font-bold text-slate-600 mb-1">FP</label>
+                <input id="cm-fp" type="number" value="20" oninput="calcConfusionMatrix()" class="w-full text-center py-1 border border-slate-300 rounded font-bold text-sm bg-white">
+              </div>
+              <div>
+                <label class="block text-[11px] font-bold text-slate-600 mb-1">FN</label>
+                <input id="cm-fn" type="number" value="10" oninput="calcConfusionMatrix()" class="w-full text-center py-1 border border-slate-300 rounded font-bold text-sm bg-white">
+              </div>
+              <div>
+                <label class="block text-[11px] font-bold text-slate-600 mb-1">TN</label>
+                <input id="cm-tn" type="number" value="90" oninput="calcConfusionMatrix()" class="w-full text-center py-1 border border-slate-300 rounded font-bold text-sm bg-white">
+              </div>
+            </div>
+
+            <div class="grid grid-cols-3 gap-2 pt-2 border-t border-indigo-200/60 text-center text-xs">
+              <div class="bg-white p-2 rounded border border-indigo-100">
+                <div class="text-slate-500 font-medium">정밀도</div>
+                <div id="res-precision" class="text-sm font-extrabold text-blue-600">80.0%</div>
+              </div>
+              <div class="bg-white p-2 rounded border border-indigo-100">
+                <div class="text-slate-500 font-medium">재현율 (민감도)</div>
+                <div id="res-recall" class="text-sm font-extrabold text-emerald-600">88.9%</div>
+              </div>
+              <div class="bg-white p-2 rounded border border-indigo-100">
+                <div class="text-slate-500 font-medium">F1-Score</div>
+                <div id="res-f1" class="text-sm font-extrabold text-purple-600">0.842</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="text-xs text-rose-600 bg-rose-50 p-2.5 rounded-lg border border-rose-200 font-semibold">
+            🚨 <b>시험 함정 방지</b>: "F1-Score는 산술평균이나 기하평균이 아니라 <b>조화평균</b>이다!" 정답 선지로 무조건 나옵니다.
+          </div>
+        </div>
+
+        <!-- 2. 연관규칙 3대 지표 (지지도 • 신뢰도 • 향상도) -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-4">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-extrabold px-2.5 py-1 rounded-full bg-teal-100 text-teal-700">3과목 연관분석</span>
+            <span class="text-xs font-black text-rose-600 bg-rose-50 px-2 py-0.5 rounded border border-rose-200">기출 1순위 (계산 단골)</span>
+          </div>
+
+          <h3 class="text-lg font-black text-slate-900">2. 연관분석 (지지도 • 신뢰도 • 향상도)</h3>
+
+          <!-- 공식 시각화 -->
+          <div class="space-y-3 bg-slate-50 p-4 rounded-xl border border-slate-200">
+            <!-- 지지도 -->
+            <div class="flex items-center justify-between text-xs sm:text-sm">
+              <span class="font-bold text-slate-700 w-24">지지도 (Support):</span>
+              <div class="fraction text-teal-700">
+                <span class="numerator">A와 B를 동시 구매한 거래수</span>
+                <span class="denominator">전체 거래수 (N)</span>
+              </div>
+              <span class="text-[11px] text-slate-500 text-right">P(A ∩ B)</span>
+            </div>
+            <!-- 신뢰도 -->
+            <div class="flex items-center justify-between text-xs sm:text-sm">
+              <span class="font-bold text-slate-700 w-24">신뢰도 (Confidence):</span>
+              <div class="fraction text-blue-700">
+                <span class="numerator">A와 B를 동시 구매한 거래수</span>
+                <span class="denominator">A를 구매한 거래수</span>
+              </div>
+              <span class="text-[11px] text-slate-500 text-right">P(B | A)</span>
+            </div>
+            <!-- 향상도 -->
+            <div class="flex items-center justify-between text-xs sm:text-sm">
+              <span class="font-bold text-slate-700 w-24">향상도 (Lift):</span>
+              <div class="fraction text-amber-700">
+                <span class="numerator">신뢰도 (Confidence)</span>
+                <span class="denominator">B의 지지도 P(B)</span>
+              </div>
+              <span class="text-[11px] text-slate-500 text-right"><span class="fraction"><span class="numerator">P(A ∩ B)</span><span class="denominator">P(A) × P(B)</span></span></span>
+            </div>
+          </div>
+
+          <!-- 향상도 기준 표 -->
+          <div class="grid grid-cols-3 gap-2 text-center text-xs">
+            <div class="bg-slate-100 p-2 rounded border border-slate-200">
+              <div class="font-bold text-slate-800">Lift = 1</div>
+              <div class="text-[11px] text-slate-500">독립 (상관없음)</div>
+            </div>
+            <div class="bg-emerald-50 p-2 rounded border border-emerald-200">
+              <div class="font-bold text-emerald-800">Lift &gt; 1</div>
+              <div class="text-[11px] text-emerald-600 font-bold">양의 상관 (유의미!)</div>
+            </div>
+            <div class="bg-rose-50 p-2 rounded border border-rose-200">
+              <div class="font-bold text-rose-800">Lift &lt; 1</div>
+              <div class="text-[11px] text-rose-600">음의 상관 (비추천)</div>
+            </div>
+          </div>
+
+          <!-- 연관분석 실시간 계산기 -->
+          <div class="p-4 bg-teal-50/60 rounded-xl border border-teal-100 space-y-3">
+            <div class="text-xs font-extrabold text-teal-900 flex items-center justify-between">
+              <span><i class="fa-solid fa-calculator text-teal-600 mr-1.5"></i>연관규칙 기출 숫자 대입기 (총 거래 100건 기준)</span>
+              <button onclick="resetAssoc()" class="text-[11px] text-teal-600 underline">기본값 리셋</button>
+            </div>
+            
+            <div class="grid grid-cols-4 gap-2 text-center">
+              <div>
+                <label class="block text-[11px] font-bold text-slate-600 mb-1">전체(N)</label>
+                <input id="as-total" type="number" value="100" oninput="calcAssoc()" class="w-full text-center py-1 border border-slate-300 rounded font-bold text-sm bg-white">
+              </div>
+              <div>
+                <label class="block text-[11px] font-bold text-slate-600 mb-1">A 구매수</label>
+                <input id="as-a" type="number" value="40" oninput="calcAssoc()" class="w-full text-center py-1 border border-slate-300 rounded font-bold text-sm bg-white">
+              </div>
+              <div>
+                <label class="block text-[11px] font-bold text-slate-600 mb-1">B 구매수</label>
+                <input id="as-b" type="number" value="50" oninput="calcAssoc()" class="w-full text-center py-1 border border-slate-300 rounded font-bold text-sm bg-white">
+              </div>
+              <div>
+                <label class="block text-[11px] font-bold text-slate-600 mb-1">A,B 동시구매</label>
+                <input id="as-both" type="number" value="30" oninput="calcAssoc()" class="w-full text-center py-1 border border-slate-300 rounded font-bold text-sm bg-white">
+              </div>
+            </div>
+
+            <div class="grid grid-cols-3 gap-2 pt-2 border-t border-teal-200/60 text-center text-xs">
+              <div class="bg-white p-2 rounded border border-teal-100">
+                <div class="text-slate-500 font-medium">지지도 (Support)</div>
+                <div id="res-support" class="text-sm font-extrabold text-teal-600">30.0% (0.3)</div>
+              </div>
+              <div class="bg-white p-2 rounded border border-teal-100">
+                <div class="text-slate-500 font-medium">신뢰도 (A→B)</div>
+                <div id="res-confidence" class="text-sm font-extrabold text-blue-600">75.0% (0.75)</div>
+              </div>
+              <div class="bg-white p-2 rounded border border-teal-100">
+                <div class="text-slate-500 font-medium">향상도 (Lift)</div>
+                <div id="res-lift" class="text-sm font-extrabold text-amber-600">1.50 (양의 상관)</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="text-xs text-teal-800 bg-teal-50 p-2.5 rounded-lg border border-teal-200 font-medium">
+            💡 <b>두문자 암기</b>: <b>"지전! 신A!"</b> (지지도는 전체가 분모, 신뢰도는 선행사건 A가 분모!)
+          </div>
+        </div>
+
+        <!-- 3. 의사결정나무 불순도 (지니계수 & 엔트로피) -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-4">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-extrabold px-2.5 py-1 rounded-full bg-amber-100 text-amber-800">3과목 의사결정나무</span>
+            <span class="text-xs font-black text-blue-600 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">개념 & 계산 빈출</span>
+          </div>
+
+          <h3 class="text-lg font-black text-slate-900">3. 불순도 지표 (지니 지수 • 엔트로피)</h3>
+
+          <div class="space-y-3 bg-slate-50 p-4 rounded-xl border border-slate-200 text-xs sm:text-sm">
+            <!-- 지니 지수 -->
+            <div>
+              <div class="flex items-center justify-between font-bold text-slate-800 mb-1">
+                <span>지니 지수 (Gini Index):</span>
+                <span class="font-mono text-indigo-600 font-extrabold">Gini = 1 - ∑ (p_i)²</span>
+              </div>
+              <p class="text-[11px] text-slate-500">2개 범주일 때 p_1 = p, p_2 = 1 - p 이면 Gini = 2p(1 - p). <b>p = 0.5일 때 최대값 0.5</b></p>
+            </div>
+
+            <!-- 엔트로피 -->
+            <div class="pt-2 border-t border-slate-200">
+              <div class="flex items-center justify-between font-bold text-slate-800 mb-1">
+                <span>엔트로피 (Entropy):</span>
+                <span class="font-mono text-purple-600 font-extrabold">Entropy = - ∑ p_i × log₂(p_i)</span>
+              </div>
+              <p class="text-[11px] text-slate-500">2개 범주일 때 p = 0.5일 때 최대값 1.0 (가장 혼잡한 상태)</p>
+            </div>
+          </div>
+
+          <!-- 지니계수 계산기 -->
+          <div class="p-4 bg-amber-50/60 rounded-xl border border-amber-100 space-y-3">
+            <div class="text-xs font-extrabold text-amber-900 flex items-center justify-between">
+              <span><i class="fa-solid fa-calculator text-amber-600 mr-1.5"></i>2개 범주 지니지수 즉시 계산기</span>
+            </div>
+            
+            <div class="space-y-2">
+              <div class="flex items-center justify-between text-xs">
+                <span class="font-bold text-slate-700">A 범주 비율 (p): <span id="gini-p-val" class="text-blue-600 font-extrabold">0.50</span></span>
+                <span class="font-bold text-slate-700">B 범주 비율 (1-p): <span id="gini-1p-val" class="text-slate-500 font-extrabold">0.50</span></span>
+              </div>
+              <input id="gini-slider" type="range" min="0" max="100" value="50" oninput="calcGini()" class="w-full accent-amber-600">
+            </div>
+
+            <div class="bg-white p-3 rounded-lg border border-amber-200 text-center">
+              <div class="text-xs text-slate-500">계산된 지니 지수 (Gini Index)</div>
+              <div id="res-gini" class="text-2xl font-black text-amber-600 mt-1">0.500</div>
+              <div id="res-gini-desc" class="text-[11px] text-slate-500 mt-1">최대 불순도 (반반 섞여서 가장 불확실함)</div>
+            </div>
+          </div>
+
+          <div class="text-xs text-slate-600 bg-slate-100 p-2.5 rounded-lg border border-slate-200">
+            📌 <b>핵심 포인트</b>: 의사결정나무는 노드를 분할할 때 <b>불순도가 감소(순수도 증가)</b>하는 방향으로 분할합니다!
+          </div>
+        </div>
+
+        <!-- 4. 회귀분석 결정계수 & 시계열/이상치 IQR -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-4">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-extrabold px-2.5 py-1 rounded-full bg-purple-100 text-purple-700">3과목 통계 분석</span>
+            <span class="text-xs font-black text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">빈출 핵심</span>
+          </div>
+
+          <h3 class="text-lg font-black text-slate-900">4. 통계 필수 수식 (결정계수 • IQR • VIF)</h3>
+
+          <div class="space-y-3">
+            <!-- 회귀분석 결정계수 -->
+            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+              <div class="text-xs font-bold text-slate-800 mb-1 flex justify-between">
+                <span>회귀 결정계수 (R²):</span>
+                <span class="text-purple-600 font-mono font-bold">R² = SSR / SST = 1 - (SSE / SST)</span>
+              </div>
+              <p class="text-[11px] text-slate-600 leading-relaxed">
+                • 총변동(SST) 중 회귀식으로 설명되는 변동(SSR)의 비율 (0 ≤ R² ≤ 1)<br>
+                • <b>다중공선성(VIF)</b>: VIF &gt; 10 이면 다중공선성 존재 의심 (변수 제거 또는 축소)
+              </p>
+            </div>
+
+            <!-- 이상값 IQR 방식 -->
+            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+              <div class="text-xs font-bold text-slate-800 mb-1 flex justify-between">
+                <span>이상치(Outlier) 판단 IQR 공식:</span>
+                <span class="text-blue-600 font-mono font-bold">IQR = Q3 - Q1</span>
+              </div>
+              <p class="text-[11px] text-slate-600 leading-relaxed">
+                • <b>정상 범위 하한</b>: Q1 - 1.5 × IQR<br>
+                • <b>정상 범위 상한</b>: Q3 + 1.5 × IQR (이 범위를 벗어나면 이상치 판정!)
+              </p>
+            </div>
+
+            <!-- 시계열 정상성 조건 -->
+            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+              <div class="text-xs font-bold text-slate-800 mb-1">
+                <span>시계열 정상성(Stationarity) 3대 조건:</span>
+              </div>
+              <p class="text-[11px] text-slate-600 leading-relaxed">
+                1. <b>평균이 일정</b>하다. (일정하지 않으면 <b>차분(Difference)</b> 수행)<br>
+                2. <b>분산이 일정</b>하다. (일정하지 않으면 <b>로그/제곱근 변환</b> 수행)<br>
+                3. 공분산은 시점 t에 의존하지 않고 오직 <b>시차(Lag)에만 의존</b>한다.
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- TAB 4: 3초 플래시카드 & OX 스피드 퀴즈 -->
+    <section id="tab-flashcards" class="tab-content hidden space-y-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-xl font-extrabold text-slate-900">⚡ 3초 플래시카드 & OX 벼락치기</h2>
+          <p class="text-xs text-slate-500">카드를 클릭해 뒤집으면 정답과 두문자 암기 꿀팁이 보입니다.</p>
+        </div>
+
+        <div class="flex items-center space-x-2">
+          <button onclick="prevFlashcard()" class="p-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700">
+            <i class="fa-solid fa-chevron-left"></i>
+          </button>
+          <span id="fc-counter" class="text-xs font-bold text-slate-700 min-w-[50px] text-center">1 / 20</span>
+          <button onclick="nextFlashcard()" class="p-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700">
+            <i class="fa-solid fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- 플래시카드 메인 뷰 -->
+      <div class="max-w-xl mx-auto">
+        <div onclick="flipCard()" class="perspective-1000 cursor-pointer h-72">
+          <div id="card-inner" class="relative w-full h-full duration-500 transform-style-preserve-3d shadow-lg rounded-2xl border border-slate-200">
+            
+            <!-- 앞면 (질문/개념) -->
+            <div class="absolute inset-0 w-full h-full backface-hidden bg-white rounded-2xl p-6 flex flex-col justify-between border-2 border-indigo-100">
+              <div class="flex items-center justify-between">
+                <span id="fc-subject" class="text-xs font-black px-2.5 py-1 rounded-full bg-indigo-50 text-indigo-600">과목 1</span>
+                <span class="text-xs text-slate-400 font-medium"><i class="fa-solid fa-rotate mr-1"></i>클릭해서 뒤집기</span>
+              </div>
+              <div class="my-auto text-center px-4">
+                <p id="fc-question" class="text-lg sm:text-xl font-extrabold text-slate-900 leading-snug">
+                  질문이 들어갑니다.
+                </p>
+              </div>
+              <div class="text-center text-xs text-slate-400 font-bold">
+                (정답과 두문자 암기 꿀팁 확인)
+              </div>
+            </div>
+
+            <!-- 뒷면 (답변 & 암기팁) -->
+            <div class="absolute inset-0 w-full h-full backface-hidden rotate-y-180 bg-gradient-to-tr from-slate-900 to-indigo-950 text-white rounded-2xl p-6 flex flex-col justify-between">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-black px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">정답 확인</span>
+                <span class="text-xs text-slate-400"><i class="fa-solid fa-rotate mr-1"></i>다시 뒤집기</span>
+              </div>
+              <div class="my-auto space-y-3 px-2 text-center">
+                <div id="fc-answer" class="text-base sm:text-lg font-bold text-white">
+                  정답 내용
+                </div>
+                <div id="fc-tip" class="inline-block bg-amber-400/20 text-amber-300 border border-amber-400/30 px-3 py-1.5 rounded-lg text-xs font-bold">
+                  💡 두문자: 팁 내용
+                </div>
+              </div>
+              <div class="text-center text-xs text-slate-400">
+                ADsP 실전 빈출 핵심 포인트
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="flex justify-center space-x-3 mt-4">
+          <button onclick="prevFlashcard()" class="px-4 py-2 rounded-xl bg-slate-200 hover:bg-slate-300 font-bold text-xs text-slate-700">이전 카드</button>
+          <button onclick="shuffleFlashcards()" class="px-4 py-2 rounded-xl bg-indigo-50 hover:bg-indigo-100 font-bold text-xs text-indigo-700">
+            <i class="fa-solid fa-shuffle mr-1"></i>랜덤 섞기
+          </button>
+          <button onclick="nextFlashcard()" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 font-bold text-xs text-white">다음 카드</button>
+        </div>
+      </div>
+
+      <!-- OX 스피드 퀴즈 섹션 -->
+      <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm mt-8">
+        <h3 class="text-base font-extrabold text-slate-900 mb-3 flex items-center">
+          <i class="fa-solid fa-circle-question text-rose-500 mr-2"></i>기출 함정 선지 격파 OX 10선
+        </h3>
+
+        <div id="ox-container" class="space-y-3">
+          <!-- JS 렌더링 -->
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 5: 실전 모의고사 50제 & 오답노트 -->
+    <section id="tab-mocktest" class="tab-content hidden space-y-6">
+      
+      <!-- 상단 시험 정보 & 타이머 바 -->
+      <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <h2 class="text-lg font-black text-slate-900 flex items-center">
+            <i class="fa-solid fa-clock text-blue-600 mr-2"></i>ADsP 실전 50제 파이널 모의고사
+          </h2>
+          <p class="text-xs text-slate-500">실제 시험 규격 배분: 1과목(10제) + 2과목(10제) + 3과목(30제) | 합격선: 과목당 40% 이상 & 총점 60점</p>
+        </div>
+
+        <div class="flex items-center space-x-3">
+          <!-- 타이머 -->
+          <div class="bg-slate-100 px-3.5 py-1.5 rounded-xl flex items-center space-x-2 text-slate-700 font-mono font-bold text-sm">
+            <i class="fa-regular fa-clock text-slate-500"></i>
+            <span id="exam-timer">90:00</span>
+          </div>
+
+          <button onclick="submitExam()" id="btn-submit-exam" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-sm transition">
+            <i class="fa-solid fa-paper-plane mr-1.5"></i>답안 제출 & 채점
+          </button>
+          <button onclick="resetExam()" class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold text-xs transition">
+            다시 풀기
+          </button>
+        </div>
+      </div>
+
+      <!-- 성적 결과 대시보드 (제출 시 노출) -->
+      <div id="exam-result-box" class="hidden bg-white rounded-2xl border-2 border-indigo-500 p-6 shadow-md space-y-4">
+        <!-- JS로 채워짐 -->
+      </div>
+
+      <!-- 필터 바 (오답만 보기 등) -->
+      <div class="flex items-center justify-between text-xs">
+        <div class="flex items-center space-x-2">
+          <button onclick="filterMockQuestions('all')" id="qf-all" class="px-3 py-1 rounded-lg bg-slate-900 text-white font-bold">전체 보기 (50)</button>
+          <button onclick="filterMockQuestions('sub1')" id="qf-sub1" class="px-3 py-1 rounded-lg bg-slate-100 text-slate-600 font-bold hover:bg-slate-200">1과목 (10)</button>
+          <button onclick="filterMockQuestions('sub2')" id="qf-sub2" class="px-3 py-1 rounded-lg bg-slate-100 text-slate-600 font-bold hover:bg-slate-200">2과목 (10)</button>
+          <button onclick="filterMockQuestions('sub3')" id="qf-sub3" class="px-3 py-1 rounded-lg bg-slate-100 text-slate-600 font-bold hover:bg-slate-200">3과목 (30)</button>
+          <button onclick="filterMockQuestions('wrong')" id="qf-wrong" class="hidden px-3 py-1 rounded-lg bg-rose-100 text-rose-700 font-bold hover:bg-rose-200">
+            <i class="fa-solid fa-triangle-exclamation mr-1"></i>틀린 문제만 모아보기
+          </button>
+        </div>
+
+        <span class="text-slate-500 font-medium">풀이 진행률: <span id="progress-text" class="font-bold text-blue-600">0 / 50</span></span>
+      </div>
+
+      <!-- 문항 리스트 컨테이너 -->
+      <div id="questions-container" class="space-y-4">
+        <!-- JS 렌더링 -->
+      </div>
+    </section>
+
+    <!-- TAB 6: 따라쓰기 워크북 & A4 PDF 출력 모드 -->
+    <section id="tab-workbook" class="tab-content hidden space-y-6">
+      
+      <!-- 상단 액션 바 -->
+      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-wrap items-center justify-between gap-4 no-print">
+        <div>
+          <h2 class="text-xl font-black text-slate-900 flex items-center">
+            <i class="fa-solid fa-pen-nib text-indigo-600 mr-2"></i>D-4 손글씨 따라쓰기 필기본 & 워크북
+          </h2>
+          <p class="text-xs text-slate-500">
+            직접 손으로 써보거나, 빈칸을 클릭하여 정답을 확인할 수 있습니다. 인쇄하여 시험장에 가져가세요!
+          </p>
+        </div>
+
+        <div class="flex items-center space-x-2">
+          <button onclick="toggleAllBlanks()" class="px-3.5 py-2 text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 rounded-xl transition">
+            <i class="fa-solid fa-eye mr-1.5"></i>전체 빈칸 정답 On/Off
+          </button>
+          <button onclick="window.print()" class="px-4 py-2 text-xs font-bold text-white bg-slate-900 hover:bg-slate-800 rounded-xl shadow-sm transition">
+            <i class="fa-solid fa-print mr-1.5"></i>A4 용지로 인쇄 / PDF 저장
+          </button>
+          <a href="adsp_handwriting_workbook.pdf" download="ADsP_D4_따라쓰기_필기본_워크북.pdf" class="px-4 py-2 text-xs font-black text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl shadow-sm transition">
+            <i class="fa-solid fa-file-pdf mr-1.5"></i>완성형 PDF 직접 다운
+          </a>
+        </div>
+      </div>
+
+      <!-- 워크북 본문 (화면 및 A4 인쇄 지원) -->
+      <div class="bg-white p-6 sm:p-10 rounded-2xl border border-slate-200 shadow-sm space-y-8 max-w-4xl mx-auto print:border-none print:p-0">
+        
+        <!-- 타이틀 헤더 -->
+        <div class="text-center pb-6 border-b border-slate-200">
+          <span class="text-xs font-black text-indigo-600 uppercase tracking-widest">ADsP Data Analytics Semi-Professional</span>
+          <h1 class="text-2xl sm:text-3xl font-black text-slate-900 mt-1">D-4 초압축 손글씨 따라쓰기 치트시트</h1>
+          <p class="text-xs text-slate-500 mt-2">필수 개념 빈칸 완성 &amp; 무결점 공식 노트 &amp; 두문자 암기 암기장</p>
+        </div>
+
+        <!-- 1과목 따라쓰기 -->
+        <div class="space-y-4">
+          <div class="flex items-center justify-between border-b-2 border-blue-600 pb-2">
+            <h3 class="font-extrabold text-base text-blue-900 flex items-center">
+              <span class="w-6 h-6 rounded-md bg-blue-600 text-white flex items-center justify-center text-xs mr-2">1</span>
+              제1과목: 데이터의 이해 (손글씨 따라쓰기)
+            </h3>
+            <span class="text-xs font-bold text-rose-600">두문자: 데정지지 • 공표연내 • 사책알</span>
+          </div>
+
+          <div class="space-y-3 text-xs sm:text-sm">
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+              <div class="font-bold text-slate-800 mb-1">1. DIKW 피라미드 (데 - 정 - 지 - 지)</div>
+              <p class="text-slate-600 leading-relaxed">
+                • <b>Data (데이터)</b>: 순수한 객관적 <span class="blank-word font-bold text-indigo-600 underline cursor-pointer" onclick="toggleBlank(this)" data-answer="사실 (Fact)">[ 사실 (Fact) ]</span> (예: A마트 100원, B마트 200원)<br>
+                • <b>Information (정보)</b>: 데이터를 가공하여 <span class="blank-word font-bold text-indigo-600 underline cursor-pointer" onclick="toggleBlank(this)" data-answer="의미 (Context)">[ 의미 (Context) ]</span> 부여 (예: A마트가 더 싸다)<br>
+                • <b>Knowledge (지식)</b>: 정보를 구조화하여 <span class="blank-word font-bold text-indigo-600 underline cursor-pointer" onclick="toggleBlank(this)" data-answer="개인적 경험으로 체득">[ 개인적 경험으로 체득 ]</span> (예: A마트에서 사야겠다)<br>
+                • <b>Wisdom (지혜)</b>: 지식을 바탕으로 미래를 <span class="blank-word font-bold text-indigo-600 underline cursor-pointer" onclick="toggleBlank(this)" data-answer="예측 및 창의적 판단">[ 예측 및 창의적 판단 ]</span>
+              </p>
+            </div>
+
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+              <div class="font-bold text-slate-800 mb-1">2. 암묵지와 형식지의 상호작용 (공 - 표 - 연 - 내)</div>
+              <p class="text-slate-600 leading-relaxed">
+                • <b>공통화 (Socialization)</b>: 암묵지 → 암묵지 (경험 공유, 신체적 전수)<br>
+                • <b>표출화 (Externalization)</b>: 암묵지 → 형식지 (<span class="blank-word font-bold text-indigo-600 underline cursor-pointer" onclick="toggleBlank(this)" data-answer="문서화, 매뉴얼화">[ 문서화, 매뉴얼화 ]</span>)<br>
+                • <b>연결화 (Combination)</b>: 형식지 → 형식지 (문서 결합 및 체계화)<br>
+                • <b>내면화 (Internalization)</b>: 형식지 → 암묵지 (독서/훈련을 통한 자기 것 화)
+              </p>
+            </div>
+
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+              <div class="font-bold text-slate-800 mb-1">3. 빅데이터 위기요인 3가지와 통제방안 (사 - 책 - 알)</div>
+              <p class="text-slate-600 leading-relaxed">
+                • <b>사생활 침해</b> ➔ 해결책: <span class="blank-word font-bold text-indigo-600 underline cursor-pointer" onclick="toggleBlank(this)" data-answer="책임 원칙">[ 책임 원칙 ]</span> (동의제도에서 책임제도로 전환)<br>
+                • <b>책임 원칙 훼손</b> ➔ 해결책: <span class="blank-word font-bold text-indigo-600 underline cursor-pointer" onclick="toggleBlank(this)" data-answer="결과 기반 책임">[ 결과 기반 책임 ]</span> (예측만으로 처벌 불가)<br>
+                • <b>알고리즘 블랙박스</b> ➔ 해결책: <span class="blank-word font-bold text-indigo-600 underline cursor-pointer" onclick="toggleBlank(this)" data-answer="알고리즈미스트">[ 알고리즈미스트 ]</span> 제도 도입 (설명책임 부여)
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2과목 따라쓰기 -->
+        <div class="space-y-4">
+          <div class="flex items-center justify-between border-b-2 border-teal-600 pb-2">
+            <h3 class="font-extrabold text-base text-teal-900 flex items-center">
+              <span class="w-6 h-6 rounded-md bg-teal-600 text-white flex items-center justify-center text-xs mr-2">2</span>
+              제2과목: 데이터 분석 기획 (손글씨 따라쓰기)
+            </h3>
+            <span class="text-xs font-bold text-rose-600">두문자: 최솔인발 • 준도확정 • 조프시대인</span>
+          </div>
+
+          <div class="space-y-3 text-xs sm:text-sm">
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+              <div class="font-bold text-slate-800 mb-1">1. 분석 과제 발굴 4가지 방식 (최 - 솔 - 인 - 발)</div>
+              <div class="grid grid-cols-2 gap-2 mt-2">
+                <div class="bg-white p-2 rounded border border-slate-200">
+                  • 대상 O, 방법 O ➔ <span class="blank-word font-bold text-teal-700 underline cursor-pointer" onclick="toggleBlank(this)" data-answer="최적화 (Optimization)">[ 최적화 (Optimization) ]</span>
+                </div>
+                <div class="bg-white p-2 rounded border border-slate-200">
+                  • 대상 O, 방법 X ➔ <span class="blank-word font-bold text-teal-700 underline cursor-pointer" onclick="toggleBlank(this)" data-answer="솔루션 (Solution)">[ 솔루션 (Solution) ]</span>
+                </div>
+                <div class="bg-white p-2 rounded border border-slate-200">
+                  • 대상 X, 방법 O ➔ <span class="blank-word font-bold text-teal-700 underline cursor-pointer" onclick="toggleBlank(this)" data-answer="통찰 (Insight)">[ 통찰 (Insight) ]</span>
+                </div>
+                <div class="bg-white p-2 rounded border border-slate-200">
+                  • 대상 X, 방법 X ➔ <span class="blank-word font-bold text-teal-700 underline cursor-pointer" onclick="toggleBlank(this)" data-answer="발견 (Discovery)">[ 발견 (Discovery) ]</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+              <div class="font-bold text-slate-800 mb-1">2. 분석 거버넌스 성숙도 / 준비도 4분면 (준 - 도 - 확 - 정)</div>
+              <p class="text-slate-600 leading-relaxed">
+                • 준비도 낮음 + 성숙도 낮음 ➔ <span class="blank-word font-bold text-teal-700 underline cursor-pointer" onclick="toggleBlank(this)" data-answer="준비형">[ 준비형 ]</span><br>
+                • 준비도 높음 + 성숙도 낮음 ➔ <span class="blank-word font-bold text-teal-700 underline cursor-pointer" onclick="toggleBlank(this)" data-answer="도입형">[ 도입형 ]</span> (인프라는 있으나 분석 역량 초기)<br>
+                • 준비도 낮음 + 성숙도 높음 ➔ <span class="blank-word font-bold text-teal-700 underline cursor-pointer" onclick="toggleBlank(this)" data-answer="확산형">[ 확산형 ]</span> (조직 역량은 있으나 시스템 미비)<br>
+                • 준비도 높음 + 성숙도 높음 ➔ <span class="blank-word font-bold text-teal-700 underline cursor-pointer" onclick="toggleBlank(this)" data-answer="정착형">[ 정착형 ]</span> (최상위 단계)
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3과목 따라쓰기 & 공식 연습 칸 -->
+        <div class="space-y-4">
+          <div class="flex items-center justify-between border-b-2 border-purple-600 pb-2">
+            <h3 class="font-extrabold text-base text-purple-900 flex items-center">
+              <span class="w-6 h-6 rounded-md bg-purple-600 text-white flex items-center justify-center text-xs mr-2">3</span>
+              제3과목: 데이터 분석 &amp; 필수 계산 공식 따라쓰기
+            </h3>
+            <span class="text-xs font-bold text-rose-600">두문자: 정모예 • 민실재 • 지전신A</span>
+          </div>
+
+          <div class="space-y-3 text-xs sm:text-sm">
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+              <div class="font-bold text-slate-800 mb-2">1. 혼동행렬 지표 직접 써보기</div>
+              <div class="space-y-2">
+                <p>• 정밀도(Precision) = <span class="blank-word font-bold text-purple-700 underline cursor-pointer" onclick="toggleBlank(this)" data-answer="TP / (TP + FP)">[ TP / (TP + FP) ]</span> (분모: 모델이 True라고 예측한 합)</p>
+                <p>• 재현율(Recall/민감도) = <span class="blank-word font-bold text-purple-700 underline cursor-pointer" onclick="toggleBlank(this)" data-answer="TP / (TP + FN)">[ TP / (TP + FN) ]</span> (분모: 실제 True의 합)</p>
+                <p>• F1-Score = <span class="blank-word font-bold text-purple-700 underline cursor-pointer" onclick="toggleBlank(this)" data-answer="2 × (정밀도 × 재현율) / (정밀도 + 재현율)">[ 2 × (정밀도 × 재현율) / (정밀도 + 재현율) ]</span> (조화평균)</p>
+              </div>
+            </div>
+
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+              <div class="font-bold text-slate-800 mb-2">2. 연관분석 3대 지표 직접 써보기</div>
+              <div class="space-y-2">
+                <p>• 지지도 (Support) = <span class="blank-word font-bold text-purple-700 underline cursor-pointer" onclick="toggleBlank(this)" data-answer="A와 B 동시 구매건수 / 전체 건수(N)">[ A와 B 동시 구매건수 / 전체 건수(N) ]</span></p>
+                <p>• 신뢰도 (Confidence) = <span class="blank-word font-bold text-purple-700 underline cursor-pointer" onclick="toggleBlank(this)" data-answer="A와 B 동시 구매건수 / A 구매건수">[ A와 B 동시 구매건수 / A 구매건수 ]</span></p>
+                <p>• 향상도 (Lift) = <span class="blank-word font-bold text-purple-700 underline cursor-pointer" onclick="toggleBlank(this)" data-answer="신뢰도 / B의 지지도 = P(A ∩ B) / (P(A) × P(B))">[ 신뢰도 / B의 지지도 = P(A ∩ B) / (P(A) × P(B)) ]</span></p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 손글씨 따라쓰기 연습용 방안지 구역 -->
+        <div class="space-y-3 pt-4 border-t border-slate-200">
+          <div class="font-extrabold text-sm text-slate-800 flex items-center justify-between">
+            <span>✍️ 손글씨 연습 노트 (내가 자꾸 헷갈리는 공식 3번 적기)</span>
+            <span class="text-xs text-slate-400 font-normal">인쇄 후 볼펜으로 직접 작성하세요</span>
+          </div>
+
+          <div class="space-y-2">
+            <div class="h-10 border border-dashed border-slate-300 rounded-lg flex items-center px-3 text-xs text-slate-400">
+              연습 1. __________________________________________________________________________________
+            </div>
+            <div class="h-10 border border-dashed border-slate-300 rounded-lg flex items-center px-3 text-xs text-slate-400">
+              연습 2. __________________________________________________________________________________
+            </div>
+            <div class="h-10 border border-dashed border-slate-300 rounded-lg flex items-center px-3 text-xs text-slate-400">
+              연습 3. __________________________________________________________________________________
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 하단 푸터 -->
+  <footer class="bg-white border-t border-slate-200 py-6 mt-12 no-print text-center text-xs text-slate-500">
+    <div class="max-w-7xl mx-auto px-4 space-y-1">
+      <p class="font-bold text-slate-700">ADsP D-4 초압축 합격 마스터 웹앱</p>
+      <p>수식 깨짐 무결점 검증 완료 • 두문자 꿀팁 • 50제 모의고사 &amp; 오답노트 • 인쇄용 PDF 워크북 제공</p>
+    </div>
+  </footer>
+
+  <!-- 자바스크립트 로직 (데이터 & 인터랙션) -->
+  <script>
+    // -------------------------------------------------------------
+    // 1. 필수 개념 & 꿀팁 데이터
+    // -------------------------------------------------------------
+    const conceptsData = [
+      // 제1과목
+      {
+        sub: 'sub1',
+        title: 'DIKW 피라미드',
+        subName: '1과목 데이터 이해',
+        tip: '데 - 정 - 지 - 지 (순서 암기)',
+        content: `
+          • <b>Data(데이터)</b>: 개별 데이터 자체로는 의미가 없는 순수한 객관적 사실 (예: A마트 100원, B마트 200원)<br>
+          • <b>Information(정보)</b>: 데이터를 가공/처리하여 문맥(Context)과 의미를 부여한 것 (예: A마트가 B마트보다 더 싸다)<br>
+          • <b>Knowledge(지식)</b>: 규칙이나 경험을 통해 정보를 구조화하고 체득한 고유 지침 (예: A마트에서 사는 것이 이득이다)<br>
+          • <b>Wisdom(지혜)</b>: 지식을 바탕으로 미래를 예측하고 창의적으로 판단하는 통찰 (예: 다른 물건도 A마트가 쌀 것이다)
+        `,
+        trap: '단순한 사실을 묻는 보기는 정보가 아니라 "데이터"입니다!'
+      },
+      {
+        sub: 'sub1',
+        title: '암묵지 vs 형식지의 상호작용',
+        subName: '1과목 데이터 이해',
+        tip: '공 - 표 - 연 - 내',
+        content: `
+          • <b>공통화(Socialization)</b>: 암묵지 → 암묵지 (서로 마주보고 경험 전수, 신체적 체득)<br>
+          • <b>표출화(Externalization)</b>: 암묵지 → 형식지 (노하우를 <b>문서나 책으로 작성</b>)<br>
+          • <b>연결화(Combination)</b>: 형식지 → 형식지 (여러 문서를 조합해 새로운 지식 체계화)<br>
+          • <b>내면화(Internalization)</b>: 형식지 → 암묵지 (문서를 읽고 훈련하여 자신의 노하우로 체화)
+        `,
+        trap: '현장 숙련자의 노하우를 문서로 정리하는 것은 "표출화"입니다.'
+      },
+      {
+        sub: 'sub1',
+        title: '빅데이터 위기요인 3가지 & 통제방안',
+        subName: '1과목 데이터 이해',
+        tip: '사 - 책 - 알 (책임강화 • 결과기반 • 알고리즈미스트)',
+        content: `
+          1. <b>사생활 침해</b> ➔ 해결: <b>책임 원칙</b> (개인정보 수집 동의 방식의 한계 극복, 사용자의 책임 강화)<br>
+          2. <b>책임 원칙 훼손</b> ➔ 해결: <b>결과 기반 책임</b> (빅데이터 예측만으로 잠재적 위험 인물 처벌 금지, 실제 행위 결과에만 책임)<br>
+          3. <b>알고리즘 블랙박스</b> ➔ 해결: <b>알고리즈미스트</b> 도입 (알고리즘의 부당한 차별이나 피해를 해석하고 입증할 전문가)
+        `,
+        trap: '사생활 침해의 대책은 사전 동의 강화가 아니라 "사후 책임 원칙 강화"입니다!'
+      },
+      {
+        sub: 'sub1',
+        title: '빅데이터의 변화 (패러다임 전환)',
+        subName: '1과목 데이터 이해',
+        tip: '사후처리 • 전수조사 • 양우선 • 상관관계',
+        content: `
+          • 사전처리 ➔ <b>사후처리</b> (일단 쌓아두고 나중에 분석)<br>
+          • 표본조사 ➔ <b>전수조사</b> (클라우드/컴퓨팅 파워로 전체 데이터 분석)<br>
+          • 질(Quality) ➔ <b>양(Quantity)</b> (비정형 데이터의 방대한 양으로 노이즈 극복)<br>
+          • 인과관계 ➔ <b>상관관계</b> (왜 그런지 이유보다 무엇이 일어나는지 패턴 파악)
+        `,
+        trap: '빅데이터에서는 "인과관계"보다 "상관관계"가 중심이 됩니다.'
+      },
+      // 제2과목
+      {
+        sub: 'sub2',
+        title: '분석 과제 발굴 4가지 접근방식',
+        subName: '2과목 데이터 분석 기획',
+        tip: '최 - 솔 - 인 - 발 (OO / OX / XO / XX)',
+        content: `
+          • 대상(What) O, 방법(How) O ➔ <b>최적화 (Optimization)</b><br>
+          • 대상(What) O, 방법(How) X ➔ <b>솔루션 (Solution)</b><br>
+          • 대상(What) X, 방법(How) O ➔ <b>통찰 (Insight)</b><br>
+          • 대상(What) X, 방법(How) X ➔ <b>발견 (Discovery)</b>
+        `,
+        trap: '문제는 알고 있는데 방법을 모르는 것은 "솔루션(Solution)"입니다!'
+      },
+      {
+        sub: 'sub2',
+        title: '분석 준비도/성숙도 4분면 포지셔닝',
+        subName: '2과목 데이터 분석 기획',
+        tip: '준 - 도 - 확 - 정 (낮낮 / 높낮 / 낮높 / 높높)',
+        content: `
+          • <b>준비형 (낮음/낮음)</b>: 사전 준비 필요, 인프라와 역량 모두 부족한 상태<br>
+          • <b>도입형 (높음/낮음)</b>: 분석 인프라는 갖추었으나 조직의 활용 역량이 낮은 초기 단계<br>
+          • <b>확산형 (낮음/높음)</b>: 분석 역량은 뛰어나나 전사적 인프라 및 시스템이 미흡한 상태<br>
+          • <b>정착형 (높음/높음)</b>: 인프라와 역량이 모두 높은 최고 수준의 완성형 단계
+        `,
+        trap: '준비도는 높은데 성숙도가 낮으면 "도입형"입니다.'
+      },
+      {
+        sub: 'sub2',
+        title: '분석 조직의 3가지 구조',
+        subName: '2과목 데이터 분석 기획',
+        tip: '집중형 vs 기능형 vs 분산형',
+        content: `
+          • <b>집중형 조직</b>: 전사 분석 전담 부서에서 모든 분석을 총괄. 업무 중복 최소화, 현업 피드백 느림<br>
+          • <b>기능형 조직</b>: 별도 전담 부서 없이 각 현업 부서에서 독자적으로 분석 수행. 현업 밀착, 업무 중복 발생<br>
+          • <b>분산형 조직</b>: 전담 조직의 분석 인력을 각 현업 부서에 배치. 전사 통제와 현업 신속 대응의 조화
+        `,
+        trap: '전사 분석 전담 조직이 총괄하는 구조는 "집중형"입니다.'
+      },
+      // 제3과목
+      {
+        sub: 'sub3',
+        title: '가설검정과 p-value 해석 & 오류',
+        subName: '3과목 데이터 분석',
+        tip: 'p 작으면 H0 기각! (p < 0.05 ➔ H1 채택)',
+        content: `
+          • <b>귀무가설(H0)</b>: 차이가 없다, 효과가 없다, 기존 상태와 같다<br>
+          • <b>대립가설(H1)</b>: 차이가 있다, 효과가 있다, 연구자가 입증하려는 주장<br>
+          • <b>p-value < 0.05</b>: 귀무가설을 기각하고 대립가설을 채택 (통계적으로 유의미!)<br>
+          • <b>제1종 오류 (α)</b>: 귀무가설이 참인데 기각하는 오류 (무죄인 사람을 유죄 선고)<br>
+          • <b>제2종 오류 (β)</b>: 귀무가설이 거짓인데 채택하는 오류 (유죄인 사람을 무죄 석방)
+        `,
+        trap: '유의수준 0.05보다 p값이 작으면 귀무가설을 "기각"합니다.'
+      },
+      {
+        sub: 'sub3',
+        title: '앙상블 학습: 배깅 vs 부스팅',
+        subName: '3과목 데이터 분석',
+        tip: '배병(배깅-병렬) • 부순(부스팅-순차)',
+        content: `
+          • <b>배깅 (Bagging)</b>: 복원추출(Bootstrap)로 여러 데이터셋을 만들어 <b>독립적으로 병렬 학습</b> 후 투표/평균 (분산 감소, 과적합 완화, 대표: 랜덤 포레스트)<br>
+          • <b>부스팅 (Boosting)</b>: 이전 모델의 오분류 데이터에 <b>가중치를 부여하며 순차적 학습</b> (편향 감소, 높은 정확도, 과적합 위험, 대표: AdaBoost, XGBoost, LightGBM)
+        `,
+        trap: '부스팅은 병렬 학습이 아니라 "순차적 가중치 학습"입니다!'
+      },
+      {
+        sub: 'sub3',
+        title: '군집분석 거리 척도',
+        subName: '3과목 데이터 분석',
+        tip: '마할라노비스 = 공분산/상관관계 고려',
+        content: `
+          • <b>연속형 변수</b>: 유클리디안(최단직선), 맨하탄(격자거리), <b>마할라노비스(변수 간 상관관계/공분산 고려 거리)</b>, 민코프스키<br>
+          • <b>범주형 변수</b>: 자카드 거리(교집합/합집합), 코사인 유사도(방향성 벡터)<br>
+          • <b>실루엣 계수</b>: 군집 내 응집도와 군집 간 분리도 측정 (-1 ≤ s(i) ≤ 1, 1에 가까울수록 완벽한 군집)
+        `,
+        trap: '변수 간의 상관성을 고려하여 계산하는 거리는 "마할라노비스 거리"입니다.'
+      }
+    ];
+
+    function renderConcepts(filter = 'all') {
+      const container = document.getElementById('concepts-container');
+      const filtered = filter === 'all' ? conceptsData : conceptsData.filter(c => c.sub === filter);
+
+      container.innerHTML = filtered.map(item => `
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 space-y-3 hover:border-indigo-300 transition">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold px-2.5 py-0.5 rounded-full ${item.sub === 'sub1' ? 'bg-blue-100 text-blue-700' : item.sub === 'sub2' ? 'bg-teal-100 text-teal-700' : 'bg-purple-100 text-purple-700'}">
+              ${item.subName}
+            </span>
+            <span class="text-xs font-extrabold text-rose-600 bg-rose-50 px-2 py-0.5 rounded border border-rose-200">
+              💡 ${item.tip}
+            </span>
+          </div>
+
+          <h3 class="text-base font-extrabold text-slate-900">${item.title}</h3>
+          
+          <div class="text-xs text-slate-600 leading-relaxed space-y-1 bg-slate-50 p-3.5 rounded-xl border border-slate-100">
+            ${item.content}
+          </div>
+
+          <div class="text-[11px] font-semibold text-rose-700 bg-rose-50/70 p-2 rounded-lg border border-rose-200/50">
+            🚨 <b>함정 포인트</b>: ${item.trap}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function filterConcepts(filter) {
+      document.querySelectorAll('.concept-filter').forEach(btn => {
+        btn.classList.remove('bg-slate-900', 'text-white');
+        btn.classList.add('bg-slate-100', 'text-slate-600');
+      });
+      const activeBtn = document.getElementById(`c-btn-${filter}`);
+      if (activeBtn) {
+        activeBtn.classList.remove('bg-slate-100', 'text-slate-600');
+        activeBtn.classList.add('bg-slate-900', 'text-white');
+      }
+      renderConcepts(filter);
+    }
+
+    // -------------------------------------------------------------
+    // 2. 수식 계산기 로직 (혼동행렬, 연관분석, 지니계수)
+    // -------------------------------------------------------------
+    function calcConfusionMatrix() {
+      const tp = parseFloat(document.getElementById('cm-tp').value) || 0;
+      const fp = parseFloat(document.getElementById('cm-fp').value) || 0;
+      const fn = parseFloat(document.getElementById('cm-fn').value) || 0;
+      const tn = parseFloat(document.getElementById('cm-tn').value) || 0;
+
+      const precision = (tp + fp) > 0 ? (tp / (tp + fp)) : 0;
+      const recall = (tp + fn) > 0 ? (tp / (tp + fn)) : 0;
+      const f1 = (precision + recall) > 0 ? (2 * (precision * recall) / (precision + recall)) : 0;
+
+      document.getElementById('res-precision').innerText = (precision * 100).toFixed(1) + '%';
+      document.getElementById('res-recall').innerText = (recall * 100).toFixed(1) + '%';
+      document.getElementById('res-f1').innerText = f1.toFixed(3);
+    }
+
+    function resetConfusionMatrix() {
+      document.getElementById('cm-tp').value = 80;
+      document.getElementById('cm-fp').value = 20;
+      document.getElementById('cm-fn').value = 10;
+      document.getElementById('cm-tn').value = 90;
+      calcConfusionMatrix();
+    }
+
+    function calcAssoc() {
+      const total = parseFloat(document.getElementById('as-total').value) || 100;
+      const a = parseFloat(document.getElementById('as-a').value) || 0;
+      const b = parseFloat(document.getElementById('as-b').value) || 0;
+      const both = parseFloat(document.getElementById('as-both').value) || 0;
+
+      const support = total > 0 ? (both / total) : 0;
+      const conf = a > 0 ? (both / a) : 0;
+      const pB = total > 0 ? (b / total) : 0;
+      const lift = pB > 0 ? (conf / pB) : 0;
+
+      document.getElementById('res-support').innerText = `${(support * 100).toFixed(1)}% (${support.toFixed(2)})`;
+      document.getElementById('res-confidence').innerText = `${(conf * 100).toFixed(1)}% (${conf.toFixed(2)})`;
+      
+      let liftLabel = '독립';
+      if (lift > 1) liftLabel = '양의 상관 (추천)';
+      else if (lift < 1) liftLabel = '음의 상관 (비추천)';
+      document.getElementById('res-lift').innerText = `${lift.toFixed(2)} (${liftLabel})`;
+    }
+
+    function resetAssoc() {
+      document.getElementById('as-total').value = 100;
+      document.getElementById('as-a').value = 40;
+      document.getElementById('as-b').value = 50;
+      document.getElementById('as-both').value = 30;
+      calcAssoc();
+    }
+
+    function calcGini() {
+      const val = parseInt(document.getElementById('gini-slider').value);
+      const p = val / 100;
+      const oneMinusP = 1 - p;
+
+      document.getElementById('gini-p-val').innerText = p.toFixed(2);
+      document.getElementById('gini-1p-val').innerText = oneMinusP.toFixed(2);
+
+      const gini = 1 - (Math.pow(p, 2) + Math.pow(oneMinusP, 2));
+      document.getElementById('res-gini').innerText = gini.toFixed(3);
+
+      let desc = '';
+      if (val === 50) desc = '최대 불순도 (반반 섞여서 가장 불확실함, Gini = 0.5)';
+      else if (val === 0 || val === 100) desc = '완전 순수 (한쪽 범주만 존재하여 불순도 = 0)';
+      else desc = `불순도 ${gini < 0.3 ? '낮음 (순수함)' : '높음 (혼합됨)'}`;
+      document.getElementById('res-gini-desc').innerText = desc;
+    }
+
+    // -------------------------------------------------------------
+    // 3. 3초 플래시카드 & OX 퀴즈 데이터
+    // -------------------------------------------------------------
+    const flashcards = [
+      {
+        sub: '1과목',
+        q: 'DIKW 피라미드에서 의미(Context)가 부여된 데이터의 단계는?',
+        a: '정보 (Information)',
+        tip: '데 - 정 - 지 - 지 (데이터→정보→지식→지혜)'
+      },
+      {
+        sub: '1과목',
+        q: '노하우와 같은 개인적 암묵지를 문서나 매뉴얼로 작성하는 단계는?',
+        a: '표출화 (Externalization)',
+        tip: '공 - 표 - 연 - 내 (암묵지→형식지 = 표출화)'
+      },
+      {
+        sub: '1과목',
+        q: '빅데이터 사생활 침해를 해결하기 위해 전환되어야 하는 규제 방식은?',
+        a: '사후 책임 원칙 (동의에서 책임으로)',
+        tip: '사 - 책 - 알 (사생활침해는 책임원칙 강화)'
+      },
+      {
+        sub: '2과목',
+        q: '분석 대상(What)은 알고 있으나, 방법(How)을 모를 때의 과제 발굴 방식은?',
+        a: '솔루션 (Solution)',
+        tip: '최 - 솔 - 인 - 발 (OO:최적화, OX:솔루션)'
+      },
+      {
+        sub: '2과목',
+        q: '분석 준비도는 높으나 성숙도가 낮은 조직의 사분면 포지셔닝은?',
+        a: '도입형 (준비도 높음 / 성숙도 낮음)',
+        tip: '준 - 도 - 확 - 정 (높낮은 도입형)'
+      },
+      {
+        sub: '2과목',
+        q: '전사 분석 전담 조직에서 모든 분석 업무를 총괄하는 구조는?',
+        a: '집중형 조직',
+        tip: '집중형 vs 기능형 vs 분산형'
+      },
+      {
+        sub: '3과목',
+        q: '모델이 True라고 예측한 것 중에서 실제 True인 비율을 나타내는 지표는?',
+        a: '정밀도 (Precision = TP / (TP + FP))',
+        tip: '정 - 모 - 예 (정밀도는 모델예측 분모)'
+      },
+      {
+        sub: '3과목',
+        q: '실제 True인 것 중에서 모델이 올바르게 맞춘 비율은?',
+        a: '재현율 (Recall / 민감도 = TP / (TP + FN))',
+        tip: '민 - 실 - 재 (민감도/재현율은 실제True 분모)'
+      },
+      {
+        sub: '3과목',
+        q: '정밀도와 재현율의 균형을 평가하는 F1-Score의 평균 계산 방식은?',
+        a: '조화평균 (Harmonic Mean)',
+        tip: '산술/기하평균은 오답! 무조건 조화평균'
+      },
+      {
+        sub: '3과목',
+        q: '연관분석에서 두 품목이 완전히 독립일 때 향상도(Lift)의 값은?',
+        a: 'Lift = 1 (1보다 크면 양의 상관)',
+        tip: 'Lift 1 기준! 1보다 커야 가치 있는 규칙'
+      },
+      {
+        sub: '3과목',
+        q: '귀무가설이 실제로 참인데 잘못 기각하여 대립가설을 채택하는 오류는?',
+        a: '제1종 오류 (α, Alpha Error)',
+        tip: '1종: 무죄인 사람 유죄 판결 / 2종: 유죄 석방'
+      },
+      {
+        sub: '3과목',
+        q: '시계열 데이터에서 평균이 일정하지 않을 때 정상화하는 기법은?',
+        a: '차분 (Difference)',
+        tip: '평균 불균일 = 차분 / 분산 불균일 = 변환(로그)'
+      },
+      {
+        sub: '3과목',
+        q: '앙상블에서 복원추출을 통해 병렬로 여러 모델을 학습시키는 기법은?',
+        a: '배깅 (Bagging, 예: Random Forest)',
+        tip: '배병(배깅-병렬) vs 부순(부스팅-순차)'
+      },
+      {
+        sub: '3과목',
+        q: '변수 간의 상관관계(공분산)를 반영하여 계산하는 거리 척도는?',
+        a: '마할라노비스 거리 (Mahalanobis Distance)',
+        tip: '공분산 고려 = 마할라노비스'
+      },
+      {
+        sub: '3과목',
+        q: '다중공선성을 진단할 때 사용하는 지표와 위험 기준값은?',
+        a: 'VIF (분산팽창계수) > 10',
+        tip: 'VIF 10 이상이면 다중공선성 의심'
+      }
+    ];
+
+    let currentFcIndex = 0;
+    let isFlipped = false;
+
+    function renderFlashcard() {
+      const fc = flashcards[currentFcIndex];
+      document.getElementById('fc-counter').innerText = `${currentFcIndex + 1} / ${flashcards.length}`;
+      document.getElementById('fc-subject').innerText = fc.sub;
+      document.getElementById('fc-question').innerText = fc.q;
+      document.getElementById('fc-answer').innerText = fc.a;
+      document.getElementById('fc-tip').innerText = `💡 ${fc.tip}`;
+      
+      const inner = document.getElementById('card-inner');
+      inner.classList.remove('rotate-y-180');
+      isFlipped = false;
+    }
+
+    function flipCard() {
+      const inner = document.getElementById('card-inner');
+      isFlipped = !isFlipped;
+      if (isFlipped) {
+        inner.classList.add('rotate-y-180');
+      } else {
+        inner.classList.remove('rotate-y-180');
+      }
+    }
+
+    function nextFlashcard() {
+      currentFcIndex = (currentFcIndex + 1) % flashcards.length;
+      renderFlashcard();
+    }
+
+    function prevFlashcard() {
+      currentFcIndex = (currentFcIndex - 1 + flashcards.length) % flashcards.length;
+      renderFlashcard();
+    }
+
+    function shuffleFlashcards() {
+      flashcards.sort(() => Math.random() - 0.5);
+      currentFcIndex = 0;
+      renderFlashcard();
+    }
+
+    // OX 퀴즈 10제
+    const oxData = [
+      {
+        q: '1. 빅데이터 패러다임 변화에서는 인과관계보다 상관관계의 중요성이 더 강조된다.',
+        ans: 'O',
+        exp: '정답 O: 빅데이터에서는 현상의 원인을 규명(인과관계)하기보다 방대한 데이터의 동시 발생 패턴(상관관계)을 활용합니다.'
+      },
+      {
+        q: '2. 분석 과제 발굴에서 대상(What)은 모르지만 분석 방법(How)을 알고 있는 경우 "솔루션(Solution)" 방식이라 부른다.',
+        ans: 'X',
+        exp: '정답 X: 대상은 모르고 방법만 아는 것은 "통찰(Insight)"입니다. 솔루션은 대상을 알고 방법을 모를 때입니다 (최-솔-인-발).'
+      },
+      {
+        q: '3. F1-Score는 정밀도와 재현율의 산술평균으로 정의된다.',
+        ans: 'X',
+        exp: '정답 X: F1-Score는 산술평균이 아니라 "조화평균"입니다.'
+      },
+      {
+        q: '4. p-value가 유의수준 0.05보다 작을 때 우리는 귀무가설(H0)을 기각하고 대립가설(H1)을 채택한다.',
+        ans: 'O',
+        exp: '정답 O: p-value < 0.05 이면 관측된 결과가 우연일 확률이 극히 낮으므로 귀무가설을 기각합니다.'
+      },
+      {
+        q: '5. 향상도(Lift)가 1이라는 것은 선행 품목 A의 구매 여부와 품목 B의 구매가 서로 독립(상관없음)임을 뜻한다.',
+        ans: 'O',
+        exp: '정답 O: Lift = 1 은 독립이며, Lift > 1 이어야 함께 살 확률이 높은 유의미한 규칙입니다.'
+      },
+      {
+        q: '6. 부스팅(Boosting) 모델은 여러 개의 의사결정나무를 독립적인 병렬 방식으로 학습시켜 결합한다.',
+        ans: 'X',
+        exp: '정답 X: 독립적으로 병렬 학습하는 것은 "배깅(Bagging)"이며, 부스팅은 순차적으로 이전 오차에 가중치를 주어 학습합니다.'
+      },
+      {
+        q: '7. 회귀분석에서 VIF(분산팽창계수)가 10을 초과하면 다중공선성이 존재하는 것으로 진단할 수 있다.',
+        ans: 'O',
+        exp: '정답 O: 통상적으로 VIF 10 이상이면 독립변수 간의 상관관계가 너무 높은 다중공선성으로 판단합니다.'
+      },
+      {
+        q: '8. 마할라노비스 거리는 변수들 간의 상관성(공분산)을 고려하지 않는 유클리디안 거리의 확장이다.',
+        ans: 'X',
+        exp: '정답 X: 마할라노비스 거리는 변수 간의 공분산(상관관계)을 반드시 고려하여 계산하는 거리입니다.'
+      },
+      {
+        q: '9. 시계열 데이터에서 분산이 일정하지 않을 경우 "차분(Difference)"을 통해 안정화시킨다.',
+        ans: 'X',
+        exp: '정답 X: 분산이 일정하지 않을 때는 "변환(로그변환 등)"을 사용하고, "평균"이 일정하지 않을 때 차분을 사용합니다.'
+      },
+      {
+        q: '10. 의사결정나무는 노드를 분할할 때 불순도(지니지수, 엔트로피)가 감소하는 방향으로 분할을 수행한다.',
+        ans: 'O',
+        exp: '정답 O: 불순도가 낮아질수록(순수도가 높아질수록) 분류가 잘 된 상태이므로 불순도 감소량이 최대가 되도록 분할합니다.'
+      }
+    ];
+
+    function renderOX() {
+      const container = document.getElementById('ox-container');
+      container.innerHTML = oxData.map((item, idx) => `
+        <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200 text-xs space-y-2">
+          <div class="font-bold text-slate-800 leading-snug">${item.q}</div>
+          <div class="flex items-center space-x-2">
+            <button onclick="checkOX(${idx}, 'O')" id="ox-btn-${idx}-O" class="px-3 py-1 font-bold rounded-lg border border-blue-300 text-blue-700 bg-white hover:bg-blue-50">O</button>
+            <button onclick="checkOX(${idx}, 'X')" id="ox-btn-${idx}-X" class="px-3 py-1 font-bold rounded-lg border border-rose-300 text-rose-700 bg-white hover:bg-rose-50">X</button>
+            <span id="ox-result-${idx}" class="font-bold ml-2 hidden"></span>
+          </div>
+          <div id="ox-exp-${idx}" class="text-[11px] text-slate-600 bg-white p-2 rounded border border-slate-200 hidden">
+            ${item.exp}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function checkOX(idx, choice) {
+      const item = oxData[idx];
+      const resSpan = document.getElementById(`ox-result-${idx}`);
+      const expDiv = document.getElementById(`ox-exp-${idx}`);
+      
+      resSpan.classList.remove('hidden', 'text-emerald-600', 'text-rose-600');
+      expDiv.classList.remove('hidden');
+
+      if (choice === item.ans) {
+        resSpan.innerText = '🎉 정답입니다!';
+        resSpan.classList.add('text-emerald-600');
+      } else {
+        resSpan.innerText = '❌ 오답입니다!';
+        resSpan.classList.add('text-rose-600');
+      }
+    }
+
+    // -------------------------------------------------------------
+    // 4. 실전 모의고사 50제 데이터 & 채점 로직
+    // -------------------------------------------------------------
+    const mockQuestions = [
+      // 1과목 (10문제)
+      { id: 1, sub: 'sub1', num: 1, title: '데이터의 가치 창출 단계인 DIKW 피라미드에서 "A 마트의 계란 가격이 B 마트보다 500원 더 저렴하다"와 같이 데이터에 문맥(Context)과 의미가 부여된 단계는?', options: ['Data (데이터)', 'Information (정보)', 'Knowledge (지식)', 'Wisdom (지혜)'], ans: 1, exp: '데이터를 가공/처리하여 문맥과 의미를 부여한 것은 "정보(Information)"입니다.' },
+      { id: 2, sub: 'sub1', num: 2, title: '개인의 암묵지를 책, 매뉴얼, 보고서 등의 형식지로 변환하고 구체화하는 지식 창조 활동은?', options: ['공통화 (Socialization)', '표출화 (Externalization)', '연결화 (Combination)', '내면화 (Internalization)'], ans: 1, exp: '두문자: 공-표-연-내. 암묵지에서 형식지로 전환되는 것은 "표출화(Externalization)"입니다.' },
+      { id: 3, sub: 'sub1', num: 3, title: '빅데이터가 초래하는 3대 위기 요인 중 "책임 원칙의 훼손"에 대한 올바른 통제 방안은?', options: ['사전 동의 규제 강화', '결과 기반의 책임 원칙 강화', '알고리즈미스트 제도 폐지', '비식별화 조치 의무화'], ans: 1, exp: '책임 원칙 훼손(예측 기반 처벌 위험)의 해결책은 실제 발생한 행위 결과에 대해서만 책임을 묻는 "결과 기반의 책임 원칙 강화"입니다.' },
+      { id: 4, sub: 'sub1', num: 4, title: '빅데이터 시대의 패러다임 변화에 대한 설명으로 가장 부적절한 것은?', options: ['사전처리 방식에서 사후처리 방식으로 전환되었다.', '표본조사 방식에서 데이터 전수조사 방식으로 전환되었다.', '데이터의 정확한 질(Quality) 확보가 데이터의 양(Quantity)보다 우선시된다.', '인과관계 규명 중심에서 상관관계 분석 중심으로 전환되었다.'], ans: 2, exp: '빅데이터에서는 질보다 "양(Quantity)"을 우선시하여 방대한 데이터로 노이즈를 상쇄합니다.' },
+      { id: 5, sub: 'sub1', num: 5, title: '데이터베이스의 정의에 포함되는 4대 특징으로 올바르게 짝지어진 것은?', options: ['통합 데이터, 저장 데이터, 운영 데이터, 공용 데이터', '독립 데이터, 분산 데이터, 임시 데이터, 백업 데이터', '정형 데이터, 비정형 데이터, 반정형 데이터, 메타 데이터', '기초 데이터, 분석 데이터, 최종 데이터, 아카이브 데이터'], ans: 0, exp: '데이터베이스의 4대 특징: 통합(Integrated), 저장(Stored), 운영(Operational), 공용(Shared) 데이터.' },
+      { id: 6, sub: 'sub1', num: 6, title: '데이터 사이언티스트에게 요구되는 역량 중 Soft Skill에 해당하는 것은?', options: ['데이터 마이닝 및 머신러닝 알고리즘 구현 역량', 'R 및 Python 프로그래밍 역량', '다양한 이해관계자와의 원활한 소통 및 스토리텔링 역량', '분산 컴퓨팅 환경 구축 역량'], ans: 2, exp: '의사소통, 설득, 리더십, 비판적 시각 등은 소프트 스킬(Soft Skill)입니다.' },
+      { id: 7, sub: 'sub1', num: 7, title: '데이터 거버넌스(Data Governance)의 체계적 구성 요소 중 데이터의 의미, 속성, 출처 등을 설명해 주는 "데이터에 대한 데이터"는?', options: ['마스터 데이터 (Master Data)', '메타데이터 (Metadata)', '트랜잭션 데이터 (Transaction Data)', '로그 데이터 (Log Data)'], ans: 1, exp: '데이터에 대한 구조와 속성을 기술하는 데이터는 "메타데이터(Metadata)"입니다.' },
+      { id: 8, sub: 'sub1', num: 8, title: '빅데이터의 가치 산정이 어려운 이유로 가장 거리가 먼 것은?', options: ['데이터의 재활용(재사용) 가능성이 높아 최초 가치 예측이 어렵다.', '데이터가 기존에 없던 새로운 분석과 결합하여 다목적으로 활용된다.', '데이터의 물리적 보관 비용이 지속적으로 상승하기 때문이다.', '새로운 가치를 창출하는 창조적 활용 방식이 계속 등장하기 때문이다.'], ans: 2, exp: '클라우드와 스토리지 기술의 발전으로 데이터의 물리적 보관 비용은 오히려 급격히 하락하고 있습니다.' },
+      { id: 9, sub: 'sub1', num: 9, title: '[단답형/빈출] 관계형 데이터베이스(RDBMS)의 릴레이션 테이블에서 행(Row)을 지칭하는 용어는?', options: ['튜플 (Tuple)', '도메인 (Domain)', '차수 (Degree)', '스키마 (Schema)'], ans: 0, exp: '행(Row)은 튜플(Tuple), 열(Column)은 속성(Attribute)입니다.' },
+      { id: 10, sub: 'sub1', num: 10, title: '기업의 정보화 성숙 단계 중 분석이 일상 업무에 체화되어 새로운 비즈니스 모델과 가치를 창출하는 최고 수준의 단계는?', options: ['정형화 단계', '통합 단계', '확산 단계', '최적화 단계'], ans: 3, exp: '기업 분석 성숙도 체계에서 최고 수준은 일상화/최적화 단계입니다.' },
+
+      // 2과목 (10문제)
+      { id: 11, sub: 'sub2', num: 11, title: '분석 과제 발굴 방식 중 분석 대상(What)은 명확히 정의되어 있으나, 구체적인 분석 방법(How)을 모를 때 적합한 접근법은?', options: ['최적화 (Optimization)', '솔루션 (Solution)', '통찰 (Insight)', '발견 (Discovery)'], ans: 1, exp: '두문자: 최-솔-인-발. 대상 O, 방법 X 는 "솔루션(Solution)"입니다.' },
+      { id: 12, sub: 'sub2', num: 12, title: '기업의 분석 수준 진단에서 분석 준비도(Readiness)는 높으나, 분석 성숙도(Maturity)는 낮은 기업이 속하는 사분면은?', options: ['준비형', '도입형', '확산형', '정착형'], ans: 1, exp: '두문자: 준-도-확-정. 준비도 높음 + 성숙도 낮음 ➔ "도입형"입니다.' },
+      { id: 13, sub: 'sub2', num: 13, title: '분석 조직의 3가지 구조 중 전사 분석 전담 부서가 모든 분석 업무를 총괄하여 분석의 일관성을 높이고 중복 투자를 최소화할 수 있는 구조는?', options: ['집중형 조직', '기능형 조직', '분산형 조직', '매트릭스 조직'], ans: 0, exp: '전사 전담 조직이 총괄하는 구조는 "집중형(Centralized) 조직"입니다.' },
+      { id: 14, sub: 'sub2', num: 14, title: 'CRISP-DM 데이터 마이닝 방법론의 6단계 순서가 올바르게 나열된 것은?', options: ['업무이해 ➔ 데이터이해 ➔ 데이터준비 ➔ 모델링 ➔ 평가 ➔ 전개', '데이터이해 ➔ 업무이해 ➔ 모델링 ➔ 데이터준비 ➔ 평가 ➔ 전개', '업무이해 ➔ 모델링 ➔ 데이터이해 ➔ 데이터준비 ➔ 평가 ➔ 전개', '데이터준비 ➔ 업무이해 ➔ 데이터이해 ➔ 모델링 ➔ 평가 ➔ 전개'], ans: 0, exp: 'CRISP-DM: 업무 이해 ➔ 데이터 이해 ➔ 데이터 준비 ➔ 모델링 ➔ 평가 ➔ 전개(Deployment).' },
+      { id: 15, sub: 'sub2', num: 15, title: '분석 마스터 플랜 수립 시 분석 과제의 우선순위를 결정하는 2대 핵심 고려요소는?', options: ['투자 비용(Cost)과 일정(Schedule)', '전략적 시급성(Urgency)과 적용 난이도(Difficulty)', '인력 역량(HR)과 데이터 가용성(Data)', '조직 안정성(Safety)과 시스템 확장성(Scalability)'], ans: 1, exp: '분석 과제 우선순위 평가 기준은 "시급성(비즈니스 효과/전략적 중요도)"과 "난이도(데이터 및 분석 복잡도)"입니다.' },
+      { id: 16, sub: 'sub2', num: 16, title: '문제 정의가 명확하지 않고 보유한 데이터를 탐색하면서 통찰을 얻는 상향식 접근법(Bottom-up)에 해당하는 분석 방식은?', options: ['지도학습 (Supervised Learning)', '비지도학습 (Unsupervised Learning)', '규칙 기반 추론', '가설 검정'], ans: 1, exp: '데이터 자체의 결합과 군집 패턴을 찾아내는 비지도학습은 전형적인 상향식(Bottom-up) 탐색 방식입니다.' },
+      { id: 17, sub: 'sub2', num: 17, title: '분석 거버넌스 체계의 5가지 구성 요소(조-프-시-데-인)에 포함되지 않는 것은?', options: ['분석 조직 (Organization)', '분석 프로세스 (Process)', '분석 마케팅 (Marketing)', '분석 데이터 (Data)'], ans: 2, exp: '5대 요소: 조직, 프로세스, 시스템, 데이터, 인력(HR)입니다. 마케팅은 포함되지 않습니다.' },
+      { id: 18, sub: 'sub2', num: 18, title: '데이터 분석 프로젝트 관리의 5대 주요 영역에 해당하지 않는 것은?', options: ['범위 (Scope)', '시간 (Time)', '원가 (Cost)', '알고리즘 (Algorithm)'], ans: 3, exp: '프로젝트 관리 5대 주요 영역: 범위(Scope), 시간(Time), 원가(Cost), 품질(Quality), 위험(Risk).' },
+      { id: 19, sub: 'sub2', num: 19, title: '[단답형/빈출] 사물인터넷, 모바일 등에서 생성되는 데이터가 방대해짐에 따라 데이터를 중앙 클라우드로 보내지 않고 발생 지점 인근에서 실시간 처리하는 컴퓨팅 기술은?', options: ['엣지 컴퓨팅 (Edge Computing)', '그리드 컴퓨팅', '메인프레임 컴퓨팅', '양자 컴퓨팅'], ans: 0, exp: '데이터 발생 지점 인근의 단말 기기 등에서 실시간 처리하는 기술은 "엣지 컴퓨팅(Edge Computing)"입니다.' },
+      { id: 20, sub: 'sub2', num: 20, title: '분석 유즈케이스(Use Case)를 발굴하기 위한 비즈니스 모델 캔버스(Business Model Canvas)의 구성 축이 아닌 것은?', options: ['업무 (Operation)', '제품 (Product)', '고객 (Customer)', '감정 (Emotion)'], ans: 3, exp: '비즈니스 모델 캔버스는 업무, 제품, 고객, 규제와 감사, 지원 인프라 등으로 구성됩니다.' },
+
+      // 3과목 (30문제)
+      { id: 21, sub: 'sub3', num: 21, title: 'R의 데이터 구조 중 2차원 매트릭스 형태이면서 서로 다른 데이터 타입(숫자, 문자, 논리형 등)을 각 열에 함께 저장할 수 있는 것은?', options: ['벡터 (Vector)', '배열 (Array)', '데이터 프레임 (Data Frame)', '행렬 (Matrix)'], ans: 2, exp: 'Matrix와 Vector는 동일한 단일 타입만 허용하지만, Data Frame은 열마다 다른 타입을 담을 수 있습니다.' },
+      { id: 22, sub: 'sub3', num: 22, title: '사분위수 범위(IQR = Q3 - Q1)를 이용한 이상치(Outlier) 판단 기준으로 올바른 것은?', options: ['Q1 - 1.5*IQR 미만 또는 Q3 + 1.5*IQR 초과', 'Q1 - 3.0*IQR 미만 또는 Q3 + 3.0*IQR 초과', 'Q2 - 1.5*IQR 미만 또는 Q2 + 1.5*IQR 초과', 'Min - 1.5*IQR 미만 또는 Max + 1.5*IQR 초과'], ans: 0, exp: '이상치 경계: 하한 Q1 - 1.5*IQR, 상한 Q3 + 1.5*IQR 입니다.' },
+      { id: 23, sub: 'sub3', num: 23, title: '결측값(Missing Value, NA) 처리 방법 중 표본의 평균, 중앙값 등 단일 통계량으로 대체할 때 분산이 과소추정되는 단점을 보완하기 위해 여러 번의 대체를 수행하는 기법은?', options: ['완전 제거법', '단순 대치법', '다중 대치법 (Multiple Imputation)', '평균 대치법'], ans: 2, exp: '대치에 수반되는 불확실성을 반영하기 위해 m개의 완성된 데이터셋을 생성하는 기법은 "다중 대치법"입니다.' },
+      { id: 24, sub: 'sub3', num: 24, title: '가설검정에서 유의수준(Significance Level) α에 대한 설명으로 옳은 것은?', options: ['귀무가설이 참인데 귀무가설을 기각할 확률 (제1종 오류의 최대 허용 한계)', '귀무가설이 거짓인데 귀무가설을 채택할 확률 (제2종 오류)', '대립가설이 참일 때 대립가설을 채택할 확률 (검정력)', '표본의 크기가 무한대로 커질 때 0으로 수렴하는 값'], ans: 0, exp: '유의수준 α는 "귀무가설이 참일 때 기각하는 제1종 오류"를 범할 최대 허용 확률입니다.' },
+      { id: 25, sub: 'sub3', num: 25, title: '가설검정의 p-value에 대한 설명 중 가장 올바른 것은?', options: ['p-value가 0.05보다 크면 연구자의 주장(대립가설)이 채택된다.', 'p-value가 0.05보다 작으면 귀무가설을 기각하여 통계적으로 유의미하다고 판단한다.', 'p-value는 제2종 오류를 범할 확률과 같다.', 'p-value는 항상 0보다 작을 수 있다.'], ans: 1, exp: 'p-value가 유의수준(보통 0.05)보다 작으면 귀무가설을 기각하고 대립가설을 채택합니다.' },
+      { id: 26, sub: 'sub3', num: 26, title: '단순선형회귀분석에서 총제곱합(SST), 회귀제곱합(SSR), 잔차제곱합(SSE) 사이의 관계와 결정계수(R²)의 올바른 공식은?', options: ['SST = SSR + SSE 이며, R² = SSR / SST', 'SST = SSR - SSE 이며, R² = SSE / SST', 'SSE = SST + SSR 이며, R² = 1 - (SSR / SST)', 'SSR = SST × SSE 이며, R² = SSR / SSE'], ans: 0, exp: 'SST = SSR + SSE 이며, 결정계수 R² = SSR / SST = 1 - (SSE / SST) 입니다.' },
+      { id: 27, sub: 'sub3', num: 27, title: '회귀모형의 잔차(Residual) 진단을 위한 4대 기본 가정에 해당하지 않는 것은?', options: ['선형성 (Linearity)', '등분산성 (Homoscedasticity)', '정규성 (Normality)', '다중공선성 (Multicollinearity)'], ans: 3, exp: '잔차 4대 가정은 선형성, 독립성, 등분산성, 정규성입니다. 다중공선성은 독립변수 간의 상관성 문제입니다.' },
+      { id: 28, sub: 'sub3', num: 28, title: '다중회귀분석에서 독립변수들 간의 강한 상관관계로 인해 회귀계수 추정의 신뢰성이 저하되는 현상과 진단 지표는?', options: ['과적합 - RMSE', '다중공선성 - VIF (분산팽창계수)', '자기상관 - 더빈왓슨', '이분산성 - 쿡의 거리'], ans: 1, exp: '독립변수 간 다중공선성은 VIF(Variance Inflation Factor)가 10을 초과할 때 심각한 것으로 판단합니다.' },
+      { id: 29, sub: 'sub3', num: 29, title: '정상 시계열(Stationary Time Series)이 만족해야 하는 조건으로 옳지 않은 것은?', options: ['평균이 시점에 관계없이 일정해야 한다.', '분산이 시점에 관계없이 일정해야 한다.', '자기공분산은 특정 시점 t에 의존하며, 시차(lag)에는 의존하지 않는다.', '계절성과 추세가 존재하지 않아야 한다.'], ans: 2, exp: '정상 시계열의 자기공분산은 특정 시점 t에 의존하지 않고 오직 "시차(Lag, k)"에만 의존해야 합니다.' },
+      { id: 30, sub: 'sub3', num: 30, title: '비정상 시계열 데이터를 정상 시계열로 변환할 때, "평균"이 일정하지 않은 경우 적용하는 가장 적절한 기법은?', options: ['로그 변환', '제곱근 변환', '차분 (Difference)', '역수 변환'], ans: 2, exp: '평균이 일정하지 않을 때는 차분(현 시점 값 - 이전 시점 값)을 취합니다. 분산이 일정치 않으면 변환(로그 등)을 씁니다.' },
+      { id: 31, sub: 'sub3', num: 31, title: 'ARIMA(p, d, q) 모형에서 d = 0 일 때의 모형은 무엇인가?', options: ['AR(p)', 'MA(q)', 'ARMA(p, q)', 'SARIMA(p, d, q)'], ans: 2, exp: 'd는 차분 횟수이므로 차분을 하지 않은 d=0 모형은 ARMA(p, q) 모형입니다.' },
+      { id: 32, sub: 'sub3', num: 32, title: '주성분분석(PCA)에서 누적 기여율(Cumulative Proportion)과 고유값(Eigenvalue)을 확인하여 주성분의 개수를 결정할 때 주로 사용하는 시각화 그래프는?', options: ['히스토그램', '산점도 행렬', '스크리 산점도 (Scree Plot)', 'QQ-Plot'], ans: 2, exp: '고유값의 크기 감소 추세를 보고 완만해지는 팔꿈치 지점을 찾는 그래프는 "스크리 산점도(Scree Plot)"입니다.' },
+      { id: 33, sub: 'sub3', num: 33, title: '의사결정나무(Decision Tree)의 분할 기준인 지니 지수(Gini Index)에 대한 설명으로 옳은 것은?', options: ['두 개 범주(p, 1-p)일 때 p=0.5일 때 지니 지수는 최소가 된다.', '지니 지수의 값이 작을수록 해당 노드의 순수도가 높음을 의미한다.', '지니 지수의 최대값은 범주 수에 무관하게 항상 1.0이다.', '엔트로피 지수보다 계산 복잡도가 훨씬 높아 잘 쓰이지 않는다.'], ans: 1, exp: '불순도(지니, 엔트로피)는 값이 작을수록 순수도가 높고 분류가 잘 된 상태입니다.' },
+      { id: 34, sub: 'sub3', num: 34, title: '의사결정나무 모델이 학습 데이터에 과도하게 적합되어 새로운 데이터에 대한 일반화 성능이 저하되는 과적합(Overfitting)을 방지하기 위한 기법은?', options: ['부트스트랩 (Bootstrap)', '가지치기 (Pruning)', '원-핫 인코딩', '정규화 (Normalization)'], ans: 1, exp: '불필요한 마디를 제거하여 모형을 단순화하는 기법은 "가지치기(Pruning)"입니다.' },
+      { id: 35, sub: 'sub3', num: 35, title: '앙상블 기법 중 원 데이터셋으로부터 크기가 같은 표본을 복원추출(Bootstrap)하여 각각 독립적으로 모델을 병렬 학습시키는 방식은?', options: ['배깅 (Bagging)', '부스팅 (Boosting)', '스태킹 (Stacking)', '에이다부스트 (AdaBoost)'], ans: 0, exp: '부트스트랩 표본을 병렬 학습하여 집계하는 것은 배깅(Bootstrap Aggregating = Bagging)입니다.' },
+      { id: 36, sub: 'sub3', num: 36, title: '랜덤 포레스트(Random Forest) 모델의 핵심 특징에 대한 설명으로 가장 적절한 것은?', options: ['이전 나무 모델의 오차를 보정하기 위해 가중치를 순차적으로 갱신한다.', '의사결정나무를 분할할 때 모든 설명변수 중 최적의 변수 하나만을 고정하여 분할한다.', '배깅(Bagging) 기법에 설명변수의 무작위(Random) 선택을 결합하여 나무들 간의 상관성을 줄인다.', '오직 단 하나의 깊은 단일 나무만을 학습시킨다.'], ans: 2, exp: '랜덤 포레스트는 배깅 기반에 변수의 무작위 추출을 추가하여 과적합을 방지하고 일반화 성능을 극대화합니다.' },
+      { id: 37, sub: 'sub3', num: 37, title: '어떤 분류 모델의 평가 결과가 TP = 90, FP = 10, FN = 30, TN = 70 일 때, 정밀도(Precision)의 값은?', options: ['0.75', '0.80', '0.90', '0.95'], ans: 2, exp: '정밀도 = TP / (TP + FP) = 90 / (90 + 10) = 90 / 100 = 0.90 (90%) 입니다.' },
+      { id: 38, sub: 'sub3', num: 38, title: '위 문제와 동일한 조건(TP = 90, FP = 10, FN = 30, TN = 70)에서 재현율(Recall / 민감도)의 값은?', options: ['0.60', '0.75', '0.85', '0.90'], ans: 1, exp: '재현율 = TP / (TP + FN) = 90 / (90 + 30) = 90 / 120 = 0.75 (75%) 입니다.' },
+      { id: 39, sub: 'sub3', num: 39, title: '혼동행렬의 평가 지표 중 F1-Score가 정밀도와 재현율의 "조화평균"을 사용하는 가장 타당한 이유는?', options: ['계산식이 가장 단순하고 직관적이기 때문이다.', '정밀도와 재현율 중 어느 한쪽으로 치우쳤을 때 페널티를 부여하여 불균형 데이터에 효과적이기 때문이다.', '항상 1 이상의 값을 갖기 때문이다.', '데이터의 정규분포 가정이 필요 없기 때문이다.'], ans: 1, exp: '조화평균은 작은 값에 민감하게 반응하므로, 정밀도와 재현율 중 한쪽만 높은 모형에 페널티를 주어 두 지표가 균형을 이룰 때 높은 값을 가집니다.' },
+      { id: 40, sub: 'sub3', num: 40, title: 'ROC(Receiver Operating Characteristic) 곡선에 대한 설명으로 옳은 것은?', options: ['가로축(X축)은 1 - 특이도(FP Rate), 세로축(Y축)은 민감도(TP Rate)이다.', '가로축(X축)은 정밀도, 세로축(Y축)은 재현율이다.', '곡선 아래 면적인 AUC의 값이 0.5일 때 완벽한 성능의 모델이다.', 'AUC의 범위는 -1부터 1까지이다.'], ans: 0, exp: 'ROC 곡선의 X축은 1-특이도(False Positive Rate), Y축은 민감도(True Positive Rate)이며, 완전한 모델의 AUC는 1.0입니다.' },
+      { id: 41, sub: 'sub3', num: 41, title: 'K-평균 군집분석(K-Means Clustering)의 한계점으로 옳지 않은 것은?', options: ['초기 군집 중심(Centroid)의 위치 설정에 따라 최종 결과가 달라질 수 있다.', '군집의 개수 K를 분석자가 사전에 직접 지정해야 한다.', '이상치(Outlier)의 영향에 매우 둔감하여 강건하다.', '구형(Spherical) 형태가 아닌 복잡한 기하학적 형태의 군집을 탐지하기 어렵다.'], ans: 2, exp: 'K-Means는 중심값으로 평균(Mean)을 사용하기 때문에 이상치에 "매우 민감"한 치명적 단점이 있습니다.' },
+      { id: 42, sub: 'sub3', num: 42, title: '계층적 군집분석에서 두 군집 간의 모든 가능한 데이터 쌍 거리 중 "가장 먼 거리"를 두 군집의 거리로 정의하는 결합 방식은?', options: ['최단 연결법 (Single Linkage)', '최장 연결법 (Complete Linkage)', '평균 연결법 (Average Linkage)', '와드 연결법 (Ward Linkage)'], ans: 1, exp: '가장 먼 거리를 사용하는 방법은 "최장 연결법(완전 연결법)"입니다. 사슬 효과(Chaining)를 방지합니다.' },
+      { id: 43, sub: 'sub3', num: 43, title: '군집분석에서 군집화의 품질을 평가하는 실루엣 계수(Silhouette Coefficient)의 값의 범위와 해석으로 옳은 것은?', options: ['범위는 0 ~ 1 이며, 0에 가까울수록 군집화가 잘 된 것이다.', '범위는 -1 ~ 1 이며, 1에 가까울수록 개별 데이터가 속한 군집과 잘 어울리고 다른 군집과 잘 분리된 것이다.', '범위는 0 ~ 무한대이다.', '음수 값을 가질 수 없으며 0.5 이상이면 과적합이다.'], ans: 1, exp: '실루엣 계수의 범위는 -1 ~ 1 이며, 1에 가까울수록 응집도와 분리도가 우수한 완벽한 군집입니다.' },
+      { id: 44, sub: 'sub3', num: 44, title: '변수 간의 상관관계(공분산 행렬)를 고려하여 계산하는 통계적 거리 척도는?', options: ['유클리디안 거리', '맨하탄 거리', '체비쇼프 거리', '마할라노비스 거리 (Mahalanobis Distance)'], ans: 3, exp: '공분산 구조를 반영하여 표준화한 거리는 "마할라노비스 거리"입니다.' },
+      { id: 45, sub: 'sub3', num: 45, title: '전체 거래 건수가 1,000건인 마트에서 품목 A가 200건, 품목 B가 300건 구매되었고, A와 B가 동시에 구매된 거래가 100건일 때, 연관규칙 A ➔ B 의 "지지도(Support)"는?', options: ['0.10 (10%)', '0.20 (20%)', '0.33 (33%)', '0.50 (50%)'], ans: 0, exp: '지지도 = P(A ∩ B) = A, B 동시구매수 / 전체 거래수 = 100 / 1000 = 0.10 (10%) 입니다.' },
+      { id: 46, sub: 'sub3', num: 46, title: '위 문제와 동일한 조건(전체 1,000, A=200, B=300, A∩B=100)에서 연관규칙 A ➔ B 의 "신뢰도(Confidence)"는?', options: ['0.10', '0.33', '0.50', '0.67'], ans: 2, exp: '신뢰도 = P(B | A) = A, B 동시구매수 / A 구매수 = 100 / 200 = 0.50 (50%) 입니다.' },
+      { id: 47, sub: 'sub3', num: 47, title: '위 문제와 동일한 조건에서 연관규칙 A ➔ B 의 "향상도(Lift)"는?', options: ['0.83', '1.00', '1.67', '2.50'], ans: 2, exp: '향상도 = 신뢰도 / P(B) = 0.50 / (300/1000) = 0.50 / 0.30 = 1.67 (1보다 크므로 유의미한 양의 상관관계) 입니다.' },
+      { id: 48, sub: 'sub3', num: 48, title: 'Apriori 알고리즘의 기본 원리로 옳은 것은?', options: ['한 항목집합이 빈발(Frequent)하면 그 항목집합의 모든 부분집합도 빈발하다.', '한 항목집합이 비빈발(Infrequent)하더라도 그 상위 집합은 빈발할 수 있다.', '최소 지지도 이상의 모든 규칙을 전수 조사(Brute-force)한다.', '규칙의 개수가 항목 수에 비례하여 선형적으로 증가한다.'], ans: 0, exp: 'Apriori 핵심 원리: "어떤 항목집합이 빈발하면 그의 모든 부분집합도 빈발하며, 반대로 어떤 항목집합이 비빈발하면 이를 포함하는 모든 상위 집합도 비빈발하여 탐색에서 제외(가지치기)한다."' },
+      { id: 49, sub: 'sub3', num: 49, title: '[단답형/빈출] 실제 참(True)인 전체 데이터 중에서 모델이 참이라고 올바르게 탐지해 낸 비율을 뜻하며, 암 진단이나 금융 사기 탐지 등에서 특히 중요한 지표는?', options: ['정밀도 (Precision)', '재현율 (Recall / 민감도)', '특이도 (Specificity)', '정확도 (Accuracy)'], ans: 1, exp: '실제 양성 환자를 놓치지 않고 감지하는 비율은 "재현율(Recall / 민감도 Sensitivity)"입니다.' },
+      { id: 50, sub: 'sub3', num: 50, title: '[단답형/빈출] 회귀분석 모형의 적합도를 평가할 때 독립변수의 개수가 증가함에 따라 무조건 값이 증가하는 기존 R²의 단점을 보완하여 패널티를 부여한 결정계수는?', options: ['수정 결정계수 (Adjusted R²)', '상관계수', '표준오차', 'AIC'], ans: 0, exp: '변수 개수에 대한 패널티를 부여하여 다중회귀분석에서 설명력을 올바르게 평가하는 것은 "수정 결정계수(Adjusted R-squared)"입니다.' }
+    ];
+
+    let userAnswers = {};
+    let examSubmitted = false;
+
+    function renderMockQuestions(filter = 'all') {
+      const container = document.getElementById('questions-container');
+      let filtered = mockQuestions;
+      
+      if (filter === 'sub1') filtered = mockQuestions.filter(q => q.sub === 'sub1');
+      else if (filter === 'sub2') filtered = mockQuestions.filter(q => q.sub === 'sub2');
+      else if (filter === 'sub3') filtered = mockQuestions.filter(q => q.sub === 'sub3');
+      else if (filter === 'wrong') {
+        filtered = mockQuestions.filter(q => userAnswers[q.id] !== undefined && userAnswers[q.id] !== q.ans);
+      }
+
+      container.innerHTML = filtered.map(q => {
+        const isAnswered = userAnswers[q.id] !== undefined;
+        const isCorrect = isAnswered && userAnswers[q.id] === q.ans;
+        const isWrong = isAnswered && userAnswers[q.id] !== q.ans;
+
+        let cardBorder = 'border-slate-200';
+        if (examSubmitted) {
+          cardBorder = isCorrect ? 'border-emerald-400 bg-emerald-50/20' : 'border-rose-400 bg-rose-50/20';
+        }
+
+        return `
+          <div class="bg-white rounded-2xl border ${cardBorder} p-5 shadow-sm space-y-3 transition">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center space-x-2">
+                <span class="w-6 h-6 rounded-md bg-slate-900 text-white font-bold flex items-center justify-center text-xs">
+                  ${q.num}
+                </span>
+                <span class="text-xs font-bold px-2 py-0.5 rounded ${q.sub === 'sub1' ? 'bg-blue-100 text-blue-700' : q.sub === 'sub2' ? 'bg-teal-100 text-teal-700' : 'bg-purple-100 text-purple-700'}">
+                  ${q.sub === 'sub1' ? '제1과목' : q.sub === 'sub2' ? '제2과목' : '제3과목'}
+                </span>
+              </div>
+
+              ${examSubmitted ? `
+                <span class="text-xs font-black px-2 py-0.5 rounded ${isCorrect ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'}">
+                  ${isCorrect ? '✓ 정답' : '✗ 오답'}
+                </span>
+              ` : ''}
+            </div>
+
+            <h3 class="text-sm sm:text-base font-extrabold text-slate-900 leading-snug">
+              ${q.title}
+            </h3>
+
+            <!-- 선지 4개 -->
+            <div class="space-y-1.5 pt-1">
+              ${q.options.map((opt, optIdx) => {
+                const selected = userAnswers[q.id] === optIdx;
+                let optStyle = 'border-slate-200 hover:bg-slate-50 text-slate-700';
+
+                if (selected) {
+                  optStyle = 'border-blue-500 bg-blue-50 text-blue-900 font-bold';
+                }
+
+                if (examSubmitted) {
+                  if (optIdx === q.ans) {
+                    optStyle = 'border-emerald-500 bg-emerald-100 text-emerald-900 font-extrabold';
+                  } else if (selected && !isCorrect) {
+                    optStyle = 'border-rose-500 bg-rose-100 text-rose-900 line-through';
+                  }
+                }
+
+                return `
+                  <button onclick="selectOption(${q.id}, ${optIdx})" class="w-full text-left p-2.5 rounded-xl border text-xs sm:text-sm flex items-start space-x-2.5 transition ${optStyle}">
+                    <span class="w-5 h-5 rounded-full flex items-center justify-center border text-[11px] font-bold flex-shrink-0 mt-0.5 ${selected ? 'border-blue-600 bg-blue-600 text-white' : 'border-slate-300 text-slate-500'}">
+                      ${optIdx + 1}
+                    </span>
+                    <span class="leading-relaxed">${opt}</span>
+                  </button>
+                `;
+              }).join('')}
+            </div>
+
+            <!-- 해설 (제출 시 노출) -->
+            ${examSubmitted ? `
+              <div class="pt-3 border-t border-slate-200 text-xs space-y-1 bg-slate-50 p-3 rounded-xl">
+                <div class="font-bold text-slate-800 flex items-center">
+                  <i class="fa-solid fa-lightbulb text-amber-500 mr-1.5"></i>정답 해설 (정답: ${q.ans + 1}번)
+                </div>
+                <p class="text-slate-600 leading-relaxed">${q.exp}</p>
+              </div>
+            ` : ''}
+          </div>
+        `;
+      }).join('');
+
+      updateProgress();
+    }
+
+    function selectOption(qId, optIdx) {
+      if (examSubmitted) return;
+      userAnswers[qId] = optIdx;
+      renderMockQuestions();
+    }
+
+    function updateProgress() {
+      const answeredCount = Object.keys(userAnswers).length;
+      document.getElementById('progress-text').innerText = `${answeredCount} / ${mockQuestions.length}`;
+    }
+
+    function submitExam() {
+      if (examSubmitted) {
+        alert('이미 제출되었습니다. 다시 풀기를 원하시면 [다시 풀기] 버튼을 누르세요.');
+        return;
+      }
+
+      const answeredCount = Object.keys(userAnswers).length;
+      if (answeredCount < mockQuestions.length) {
+        if (!confirm(`아직 풀지 않은 문제가 ${mockQuestions.length - answeredCount}개 있습니다. 그대로 제출하고 채점하시겠습니까?`)) {
+          return;
+        }
+      }
+
+      examSubmitted = true;
+
+      // 점수 계산 (1과목: 10문제 각 2점=20점, 2과목: 10문제 각 2점=20점, 3과목: 30문제 각 2점=60점 ➔ 총 100점 만점 환산)
+      let sub1Correct = 0;
+      let sub2Correct = 0;
+      let sub3Correct = 0;
+
+      mockQuestions.forEach(q => {
+        if (userAnswers[q.id] === q.ans) {
+          if (q.sub === 'sub1') sub1Correct++;
+          else if (q.sub === 'sub2') sub2Correct++;
+          else if (q.sub === 'sub3') sub3Correct++;
+        }
+      });
+
+      const totalCorrect = sub1Correct + sub2Correct + sub3Correct;
+      const totalScore = totalCorrect * 2; // 50문제 * 2점 = 100점
+      
+      const sub1Score = sub1Correct * 10; // 10문제 만점 100점 환산 (과락 기준 40점)
+      const sub2Score = sub2Correct * 10;
+      const sub3Score = (sub3Correct / 30) * 100;
+
+      // 과락 여부 (과목당 40% 미만)
+      const sub1Fail = sub1Correct < 4;
+      const sub2Fail = sub2Correct < 4;
+      const sub3Fail = sub3Correct < 12;
+      const isFailedByCut = sub1Fail || sub2Fail || sub3Fail;
+      const isPassed = totalScore >= 60 && !isFailedByCut;
+
+      const resultBox = document.getElementById('exam-result-box');
+      resultBox.classList.remove('hidden');
+      resultBox.innerHTML = `
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pb-4 border-b border-indigo-200">
+          <div>
+            <div class="text-xs font-bold uppercase tracking-wider text-indigo-700">시험 채점 결과 리포트</div>
+            <div class="text-2xl font-black text-slate-900 mt-1">
+              총점: <span class="text-indigo-600">${totalScore}점</span> (맞은 개수: ${totalCorrect} / 50)
+            </div>
+            <p class="text-xs text-slate-500 mt-0.5">합격 기준: 전과목 총점 60점 이상 &amp; 각 과목 40% 이상 (과락 없음)</p>
+          </div>
+
+          <div class="text-center px-6 py-2.5 rounded-2xl ${isPassed ? 'bg-emerald-500 text-white' : 'bg-rose-500 text-white'} shadow-md">
+            <div class="text-xs font-bold uppercase tracking-wider">최종 판정</div>
+            <div class="text-xl font-black">${isPassed ? '🎉 합격 (PASS)' : '⚠️ 불합격 (FAIL)'}</div>
+          </div>
+        </div>
+
+        <!-- 과목별 점수 & 과락 진단 -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-center text-xs">
+          <div class="p-3 rounded-xl border ${sub1Fail ? 'border-rose-400 bg-rose-50 text-rose-900' : 'border-slate-200 bg-slate-50'}">
+            <div class="font-bold text-slate-700">제1과목 데이터 이해</div>
+            <div class="text-lg font-black my-0.5">${sub1Correct} / 10 (${sub1Correct * 10}점)</div>
+            <div class="text-[11px] font-bold ${sub1Fail ? 'text-rose-600' : 'text-emerald-600'}">${sub1Fail ? '🚨 과락 발생 (4개 미만)' : '✓ 과락 통과'}</div>
+          </div>
+
+          <div class="p-3 rounded-xl border ${sub2Fail ? 'border-rose-400 bg-rose-50 text-rose-900' : 'border-slate-200 bg-slate-50'}">
+            <div class="font-bold text-slate-700">제2과목 분석 기획</div>
+            <div class="text-lg font-black my-0.5">${sub2Correct} / 10 (${sub2Correct * 10}점)</div>
+            <div class="text-[11px] font-bold ${sub2Fail ? 'text-rose-600' : 'text-emerald-600'}">${sub2Fail ? '🚨 과락 발생 (4개 미만)' : '✓ 과락 통과'}</div>
+          </div>
+
+          <div class="p-3 rounded-xl border ${sub3Fail ? 'border-rose-400 bg-rose-50 text-rose-900' : 'border-slate-200 bg-slate-50'}">
+            <div class="font-bold text-slate-700">제3과목 데이터 분석</div>
+            <div class="text-lg font-black my-0.5">${sub3Correct} / 30 (${Math.round(sub3Score)}점)</div>
+            <div class="text-[11px] font-bold ${sub3Fail ? 'text-rose-600' : 'text-emerald-600'}">${sub3Fail ? '🚨 과락 발생 (12개 미만)' : '✓ 과락 통과'}</div>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between pt-2">
+          <button onclick="filterMockQuestions('wrong')" class="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs shadow-sm transition">
+            <i class="fa-solid fa-circle-exclamation mr-1.5"></i>틀린 문제만 집중 오답노트 보기 (${50 - totalCorrect}개)
+          </button>
+          <button onclick="resetExam()" class="px-4 py-2 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold text-xs transition">
+            <i class="fa-solid fa-arrow-rotate-right mr-1.5"></i>처음부터 다시 풀기
+          </button>
+        </div>
+      `;
+
+      document.getElementById('qf-wrong').classList.remove('hidden');
+      renderMockQuestions('all');
+      resultBox.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function resetExam() {
+      if (confirm('모든 답안을 지우고 시험을 처음부터 다시 시작하시겠습니까?')) {
+        userAnswers = {};
+        examSubmitted = false;
+        document.getElementById('exam-result-box').classList.add('hidden');
+        document.getElementById('qf-wrong').classList.add('hidden');
+        renderMockQuestions('all');
+      }
+    }
+
+    function filterMockQuestions(filter) {
+      document.querySelectorAll('#tab-mocktest button[id^="qf-"]').forEach(btn => {
+        btn.classList.remove('bg-slate-900', 'text-white');
+        btn.classList.add('bg-slate-100', 'text-slate-600');
+      });
+      const activeBtn = document.getElementById(`qf-${filter}`);
+      if (activeBtn) {
+        activeBtn.classList.remove('bg-slate-100', 'text-slate-600');
+        activeBtn.classList.add('bg-slate-900', 'text-white');
+      }
+      renderMockQuestions(filter);
+    }
+
+    // -------------------------------------------------------------
+    // 5. 따라쓰기 빈칸 토글 로직
+    // -------------------------------------------------------------
+    let allBlanksRevealed = false;
+
+    function toggleBlank(el) {
+      const answer = el.getAttribute('data-answer');
+      if (el.innerText.includes('____') || el.innerText.includes('[  ]')) {
+        el.innerText = `[ ${answer} ]`;
+        el.classList.add('text-indigo-600');
+      } else {
+        el.innerText = `[ ________________ ]`;
+        el.classList.remove('text-indigo-600');
+      }
+    }
+
+    function toggleAllBlanks() {
+      allBlanksRevealed = !allBlanksRevealed;
+      document.querySelectorAll('.blank-word').forEach(el => {
+        const answer = el.getAttribute('data-answer');
+        if (allBlanksRevealed) {
+          el.innerText = `[ ${answer} ]`;
+          el.classList.add('text-indigo-600');
+        } else {
+          el.innerText = `[ ________________ ]`;
+          el.classList.remove('text-indigo-600');
+        }
+      });
+    }
+
+    // -------------------------------------------------------------
+    // 6. 탭 전환 네비게이션
+    // -------------------------------------------------------------
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(section => {
+        section.classList.add('hidden');
+      });
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.classList.remove('text-blue-600', 'bg-blue-50');
+        btn.classList.add('text-slate-600');
+      });
+
+      const target = document.getElementById(`tab-${tabId}`);
+      if (target) target.classList.remove('hidden');
+
+      const activeNav = document.getElementById(`nav-${tabId}`);
+      if (activeNav) {
+        activeNav.classList.remove('text-slate-600');
+        activeNav.classList.add('text-blue-600', 'bg-blue-50');
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // 초기화 실행
+    document.addEventListener('DOMContentLoaded', () => {
+      renderConcepts();
+      renderFlashcard();
+      renderOX();
+      renderMockQuestions();
+      calcConfusionMatrix();
+      calcAssoc();
+      calcGini();
+
+      // 타이머 카운트다운 (90분)
+      let timeLeft = 90 * 60;
+      setInterval(() => {
+        if (timeLeft > 0 && !examSubmitted) {
+          timeLeft--;
+          const m = String(Math.floor(timeLeft / 60)).padStart(2, '0');
+          const s = String(timeLeft % 60).padStart(2, '0');
+          document.getElementById('exam-timer').innerText = `${m}:${s}`;
+        }
+      }, 1000);
+    });
+  </script>
+</body>
+</html>
